@@ -36,7 +36,7 @@ with app.app_context():
 
 
 @app.route('/api/inscription', methods=['POST'])
-@cross_origin(origins="https://reservation-ccit.onrender.com")
+
 
 def inscription():
     data = request.json
@@ -63,7 +63,7 @@ def inscription():
     return jsonify({'message' : 'utilisateur crée avec succée'}),201
 
 @app.route('/api/connexion', methods=['POST'])
-@cross_origin(origins="https://reservation-ccit.onrender.com")
+
 def connexion():
     data = request.json
     email = data.get('email')
@@ -77,7 +77,7 @@ def connexion():
 
 # recuperer tout les utilisateur de role ="client"
 @app.route('/api/utilisateur/clients', methods=['GET'])
-@cross_origin(origins="https://reservation-ccit.onrender.com")
+
 @jwt_required()
 
 def get_client():
@@ -93,7 +93,7 @@ def get_client():
 
 # pour tout visiteurs non authentifier
 @app.route('/api/public/categori',methods=['GET'])
-@cross_origin(origins="https://reservation-ccit.onrender.com")
+
 
 def public_get_categorie():
     Categorie = Categories.query.all()
@@ -106,7 +106,7 @@ def public_get_categorie():
 
 #pour un accée public a tout les evenement
 @app.route('/api/public/evenements',methods=['GET'])
-@cross_origin(origins="https://reservation-ccit.onrender.com")
+
 
 def get_all_evenement():
     events = Evenement.query.all()
@@ -122,7 +122,7 @@ def get_all_evenement():
     ]),200
 
 @app.route('/api/public/evenements/<int:id>', methods=['GET'])
-@cross_origin(origins="https://reservation-ccit.onrender.com")
+
 
 def get_evenement(id):
     event = Evenement.query.get(id)
@@ -132,7 +132,7 @@ def get_evenement(id):
 
 #accée public categorie_id
 @app.route('/api/categori/<int:id>',methods=['GET'])
-@cross_origin(origins="https://reservation-ccit.onrender.com")
+
 @jwt_required()
 
 def manage_categorie_id():
@@ -156,7 +156,7 @@ def manage_categorie_id():
 """)
 
 @app.route('/api/admin/categori',methods=['GET'])
-@cross_origin(origins="https://reservation-ccit.onrender.com")
+
 @jwt_required
 
 def get_cat_admin():
@@ -165,7 +165,7 @@ def get_cat_admin():
 
 #que admin peut ajouter une categorie
 @app.route('/api/admin/categori',methods=['POST'])
-@cross_origin(origins="https://reservation-ccit.onrender.com")
+
 @jwt_required()
 
 def ajout_cat():
@@ -182,7 +182,7 @@ def ajout_cat():
 
 #admin modif || supprime categorie
 @app.route('/api/admin/categori/<int:id>',methods=['PUT','DELETE'])
-@cross_origin(origins="https://reservation-ccit.onrender.com")
+
 @jwt_required()
 
 def mis_jour_supprim_cat(id):
@@ -203,7 +203,7 @@ def mis_jour_supprim_cat(id):
 
 # admin recupere t evenement
 @app.route('/api/admin/evenements', methods=['GET'])
-@cross_origin(origins="https://reservation-ccit.onrender.com")
+
 @jwt_required()
 
 def get_evenement_admin():
@@ -244,7 +244,7 @@ def get_evenement_admin():
 
 
 @app.route('/api/admin/evenements', methods=['POST'])
-@cross_origin(origins="https://reservation-ccit.onrender.com")
+
 @jwt_required()
 def ajout_evenement():
     data = request.json
@@ -281,7 +281,7 @@ def ajout_evenement():
 
 
 @app.route('/api/admin/evenements/<int:id>', methods=['PUT','DELETE'])
-@cross_origin(origins="https://reservation-ccit.onrender.com")
+
 @jwt_required()
 
 def mise_ajour_supprim_evenement(id):
