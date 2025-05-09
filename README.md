@@ -1,10 +1,10 @@
-<h1 align="center">Python</h1>
+<h1 align="center">e-Ticketing System API</h1>
 
 <p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/{{YOUR_GITHUB_USERNAME}}/python?color=56BEB8">
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/{{YOUR_GITHUB_USERNAME}}/python?color=56BEB8">
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/{{YOUR_GITHUB_USERNAME}}/python?color=56BEB8">
-  <img alt="License" src="https://img.shields.io/github/license/{{YOUR_GITHUB_USERNAME}}/python?color=56BEB8">
+  <img alt="Github top language" src="https://img.shields.io/github/languages/top/{{YOUR_GITHUB_USERNAME}}/eticket-api?color=56BEB8">
+  <img alt="Github language count" src="https://img.shields.io/github/languages/count/{{YOUR_GITHUB_USERNAME}}/eticket-api?color=56BEB8">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/{{YOUR_GITHUB_USERNAME}}/eticket-api?color=56BEB8">
+  <img alt="License" src="https://img.shields.io/github/license/{{YOUR_GITHUB_USERNAME}}/eticket-api?color=56BEB8">
 </p>
 
 <p align="center">
@@ -21,53 +21,54 @@
 
 ## :dart: About ##
 
-Describe your project
+This is a backend REST API built with **Flask** for managing events and ticketing. It supports **user authentication with JWT**, **role-based access (Admin, Client)**, and **CRUD operations** for event and category management. The API is ready for deployment and integrates with a **PostgreSQL** database hosted on Render.
 
 ## :sparkles: Features ##
 
-:heavy_check_mark: Feature 1;\
-:heavy_check_mark: Feature 2;\
-:heavy_check_mark: Feature 3;
+:heavy_check_mark: JWT Authentication (Login/Register);\
+:heavy_check_mark: Role-based user management (Admin, Client);\
+:heavy_check_mark: Category CRUD (admin-only);\
+:heavy_check_mark: Event CRUD (admin-only);\
+:heavy_check_mark: Public access to events and categories;\
+:heavy_check_mark: PostgreSQL integration.
 
 ## :rocket: Technologies ##
 
-The following tools were used in this project:
+This project was developed using the following technologies:
 
-- [Expo](https://expo.io/)
-- [Node.js](https://nodejs.org/en/)
-- [React](https://pt-br.reactjs.org/)
-- [React Native](https://reactnative.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
+- [Python 3](https://www.python.org/)
+- [Flask](https://flask.palletsprojects.com/)
+- [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/)
+- [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/)
+- [Flask-CORS](https://flask-cors.readthedocs.io/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Render](https://render.com/) for hosting
 
 ## :white_check_mark: Requirements ##
 
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed.
+Before starting, you need to have the following installed:
+
+- [Python 3.10+](https://www.python.org/)
+- [Git](https://git-scm.com)
+- [pipenv](https://pipenv.pypa.io/) or `pip`
 
 ## :checkered_flag: Starting ##
 
 ```bash
 # Clone this project
-$ git clone https://github.com/{{YOUR_GITHUB_USERNAME}}/python
+$ git clone https://github.com/{{YOUR_GITHUB_USERNAME}}/eticket-api
 
-# Access
-$ cd python
+# Access the project directory
+$ cd eticket-api
+
+# (Optional) Create a virtual environment
+$ python -m venv venv
+$ source venv/bin/activate   # On Windows: venv\Scripts\activate
 
 # Install dependencies
-$ yarn
+$ pip install -r requirements.txt
 
-# Run the project
-$ yarn start
+# Run the app
+$ python app.py
 
-# The server will initialize in the <http://localhost:3000>
-```
-
-## :memo: License ##
-
-This project is under license from MIT. For more details, see the [LICENSE](LICENSE) file.
-
-
-Made with :heart: by <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">{{YOUR_NAME}}</a>
-
-&#xa0;
-
-<a href="#top">Back to top</a>
+# The server will start at http://localhost:5000
