@@ -7,11 +7,12 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from api import api
 import pymysql
+
+from src.config.database import init_db
 pymysql.install_as_MySQLdb
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins":"*"}})
-app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:Ghazwa_1993@localhost:3306/eticket'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=True
+init_db(app)
 app.config['JWT_SECRET_KEY']='Ghazwa' #code-clef-secret
 
 jwt = JWTManager(app)

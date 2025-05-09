@@ -5,6 +5,7 @@ from flask_cors import cross_origin
 from flask_cors import CORS
 from flask import Flask, jsonify, request, Blueprint
 from flask_sqlalchemy import SQLAlchemy
+from src.controller.evenement_controller import get_evenement
 import pymysql
 
 api = Blueprint('api',__name__)
@@ -98,10 +99,7 @@ def get_all_evenement():
 
 
 def get_evenement(id):
-    event = Evenement.query.get(id)
-    if event:
-        return jsonify(event.remplissage())
-    return jsonify({'erreur':'evenement pas trouvée'}),404
+    return get_evenement(id)
 
 #accée public categorie_id
 @api.route('/api/categori/<int:id>',methods=['GET'])
