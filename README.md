@@ -50,20 +50,20 @@ Before starting, you need to have the following installed:
 
 - [Python 3.10+](https://www.python.org/)
 - [Git](https://git-scm.com)
-- [pipenv](https://pipenv.pypa.io/) or `pip`
+- [pip](https://pip.pypa.io/) 
 
 ## :checkered_flag: Starting ##
 
 ```bash
 # Clone this project
-$ git clone https://github.com/{{YOUR_GITHUB_USERNAME}}/eticket-api
+$ git clone https://github.com/TalbiGhazwa/python
 
 # Access the project directory
-$ cd eticket-api
+$ cd python
 
 # (Optional) Create a virtual environment
 $ python -m venv venv
-$ source venv/bin/activate   # On Windows: venv\Scripts\activate
+$ source venv/bin/activate   
 
 # Install dependencies
 $ pip install -r requirements.txt
