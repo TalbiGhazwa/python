@@ -10,31 +10,32 @@ import pymysql
 
 api = Blueprint('api',__name__)
 
-@api.route('/api/inscription', methods=['POST'])
+CORS(api, resources={r"/*": {"origins":"*"}})
 
+@api.route('/api/inscription', methods=['POST'])
 def inscription():
     data = request.json
-    nomUser = data.get('nomUtilisateur'),
-    prenomUser = data.get('prenomUtilisateur'),
-    email = data.get('email'),
-    mpass = data.get('motPasse'),
+    nomUtilisateur = data.get('nomUtilisateur')
+    prenomUtilisateur = data.get('prenomUtilisateur')
+    email = data.get('email')
+    motPasse = data.get('motPasse')
     role = data.get('role')
 
     if utilisateur.query.filter_by(email=email).first():
-        return jsonify({'erreur':'email déja existe'}),400
-    
-    mPass_hash = generate_password_hash(mpass, method='pbkdf2:sha256')
+        return jsonify({'erreur':'email déja existe'}), 400
+
+    mPass_hash = generate_password_hash(motPasse, method='pbkdf2:sha256')
     new_utilisateur = utilisateur(
-        nomUtilisateur = nomUser,
-        prenomUtilisateur = prenomUser,
-        email = email,
-        mpass = mPass_hash,
-        role = role
+        nomUtilisateur=nomUtilisateur,
+        prenomUtilisateur=prenomUtilisateur,
+        email=email,
+        motPasse=mPass_hash,  
+        role=role
     )
     db.session.add(new_utilisateur)
     db.session.commit()
 
-    return jsonify({'message' : 'utilisateur crée avec succée'}),201
+    return jsonify({'message': 'utilisateur crée avec succès'}), 201
 
 @api.route('/api/connexion', methods=['POST'])
 
