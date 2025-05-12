@@ -1,10 +1,10 @@
-<h1 align="center">e-Ticketing System API</h1>
+<h1 align="center">Reservation E_ticket</h1>
 
 <p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/{{YOUR_GITHUB_USERNAME}}/eticket-api?color=56BEB8">
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/{{YOUR_GITHUB_USERNAME}}/eticket-api?color=56BEB8">
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/{{YOUR_GITHUB_USERNAME}}/eticket-api?color=56BEB8">
-  <img alt="License" src="https://img.shields.io/github/license/{{YOUR_GITHUB_USERNAME}}/eticket-api?color=56BEB8">
+  <img alt="Github top language" src="https://img.shields.io/github/languages/top/https://github.com/TalbiGhazwa/python?color=56BEB8">
+  <img alt="Github language count" src="https://img.shields.io/github/languages/count/https://github.com/TalbiGhazwa/python?color=56BEB8">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/https://github.com/TalbiGhazwa/python?color=56BEB8">
+  <img alt="License" src="https://img.shields.io/github/license/https://github.com/TalbiGhazwa/python?color=56BEB8">
 </p>
 
 <p align="center">
@@ -14,61 +14,73 @@
   <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
   <a href="#checkered_flag-starting">Starting</a> &#xa0; | &#xa0;
   <a href="#memo-license">License</a> &#xa0; | &#xa0;
-  <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">Author</a>
+  <a href="https://github.com/https://github.com/TalbiGhazwa" target="_blank">Author</a>
 </p>
 
 <br>
 
 ## :dart: About ##
 
-This is a backend REST API built with **Flask** for managing events and ticketing. It supports **user authentication with JWT**, **role-based access (Admin, Client)**, and **CRUD operations** for event and category management. The API is ready for deployment and integrates with a **PostgreSQL** database hosted on Render.
+Il s'agit d'un back-end développé avec "Flask" pour la gestion des évènement et  billéterie.
+l'authentification avec JWT avec un accés selon le role d'utilisateur administrateur ou client.
+des opérations pour la gestion des évènements et des catégories( CRUD ).
+
 
 ## :sparkles: Features ##
 
-:heavy_check_mark: JWT Authentication (Login/Register);\
-:heavy_check_mark: Role-based user management (Admin, Client);\
-:heavy_check_mark: Category CRUD (admin-only);\
-:heavy_check_mark: Event CRUD (admin-only);\
-:heavy_check_mark: Public access to events and categories;\
-:heavy_check_mark: PostgreSQL integration.
+:heavy_check_mark: authentification JWT ;\
+:heavy_check_mark: gestion des utilisateus selon le role( administrateur, client);\
+:heavy_check_mark: opérations CRUD aux évènements pour admin ;\
+:heavy_check_mark: opérations CRUD aux catégories pour admin ;\
+:heavy_check_mark: accé public pour les évènements disponibles ;\
+:heavy_check_mark: Intégration de BD PostgreSQL ;\
 
 ## :rocket: Technologies ##
 
-This project was developed using the following technologies:
+The following tools were used in this project:
 
-- [Python 3](https://www.python.org/)
+- [Python](https://www.python.org/)
 - [Flask](https://flask.palletsprojects.com/)
+- [Flask-SQLAlchemy](https://flask-sqlalchemy.readthedocs.io/)
+- [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/)
 - [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/)
-- [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/)
-- [Flask-CORS](https://flask-cors.readthedocs.io/)
 - [PostgreSQL](https://www.postgresql.org/)
-- [Render](https://render.com/) for hosting
+- [Render](https://render.com/)
+
 
 ## :white_check_mark: Requirements ##
 
-Before starting, you need to have the following installed:
-
-- [Python 3.10+](https://www.python.org/)
-- [Git](https://git-scm.com)
-- [pip](https://pip.pypa.io/) 
+Avant de démarrer vous devez avoir [GIT](https://git-scm.com) , [Python](https://www.python.org/) et [pip] (https://pip.pypa.io/) installés.
 
 ## :checkered_flag: Starting ##
 
 ```bash
-# Clone this project
+# Cloner le project
 $ git clone https://github.com/TalbiGhazwa/python
 
-# Access the project directory
+# Accée au projet
 $ cd python
 
-# (Optional) Create a virtual environment
+# créer un environnement virtuel
 $ python -m venv venv
-$ source venv/bin/activate   
+$ source venv/bin/activate
 
-# Install dependencies
+# Installer les dependences
 $ pip install -r requirements.txt
 
-# Run the app
+# Run le projet
 $ python app.py
 
-# The server will start at http://localhost:5000
+# Le serveur s'initialisera dans <http://localhost:4200>
+```
+
+## :memo: License ##
+
+This project is under license from MIT. For more details, see the [LICENSE](LICENSE) file.
+
+
+Made with :heart: by <a href="https://github.com/TalbiGhazwa" target="_blank">TALBI Ghazwa</a>
+
+&#xa0;
+
+<a href="#top">Back to top</a>

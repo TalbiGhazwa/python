@@ -6,10 +6,8 @@ from flask_cors import CORS
 from flask import Flask, jsonify, request, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 import pymysql
+controller = Blueprint('controller',__name__)
+
+CORS(controller, resources={r"/*": {"origins":"*"}})
 
 # recherche évènement par id
-def get_evenement(id):
-    event = Evenement.query.get(id)
-    if event:
-        return jsonify(event.remplissage())
-    return jsonify({'erreur':'evenement pas trouvée'}),404

@@ -12,7 +12,7 @@ db = SQLAlchemy()
 class Categories(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nomCategori = db.Column(db.String(255), unique=True, nullable=False)
-
+ 
     def __repr__(self):
         return f'<categories{self.nomCategori}>'
     
@@ -44,8 +44,8 @@ class Evenement(db.Model):
 
 class utilisateur(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nomUtilisateur = db.Column(db.String(255),unique=True, nullable=False)
-    prenomUtilisateur = db.Column(db.String(255),unique=True, nullable=False)
+    nomUtilisateur = db.Column(db.String(255), nullable=False)
+    prenomUtilisateur = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255),unique=True, nullable=False)
     motPasse = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(255), nullable= False)

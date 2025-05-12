@@ -5,7 +5,6 @@ from flask_cors import cross_origin
 from flask_cors import CORS
 from flask import Flask, jsonify, request, Blueprint
 from flask_sqlalchemy import SQLAlchemy
-from src.controller.evenement_controller import get_evenement
 import pymysql
 
 api = Blueprint('api',__name__)
@@ -51,7 +50,7 @@ def connexion():
     return jsonify({'erreur':'invalide'}),401
 
 # recuperer tout les utilisateur de role ="client"
-@api.route('/api/utilisateur/clients', methods=['GET'])
+@api.route('/api/admin/clients', methods=['GET'])
 
 @jwt_required()
 
@@ -61,7 +60,8 @@ def get_client():
         'id' : client.id,
         'nomUtilisateur' : client.nomUtilisateur,
         'prenomUtilisateur':client.prenomUtilisateur,
-        'email' : client.email
+        'email' : client.email,
+        'role' : client.role,
         }
         for client in clients
     ]),200
@@ -97,10 +97,11 @@ def get_all_evenement():
     ]),200
 
 @api.route('/api/public/evenements/<int:id>', methods=['GET'])
-
-
 def get_evenement(id):
-    return get_evenement(id)
+    event = Evenement.query.get(id)
+    if event:
+        return jsonify(event.remplissage())
+    return jsonify({'erreur':'evenement pas trouvée'}),404
 
 #accée public categorie_id
 @api.route('/api/categori/<int:id>',methods=['GET'])
@@ -153,7 +154,7 @@ def ajout_cat():
     return jsonify ({'mesage':'categorie ajoutée avec succée'}),201
 
 #admin modif || supprime categorie
-@api.route('/api/admin/categori/<int:id>',methods=['PUT','DELETE'])
+@api.route('/api/admin/categori/<int:id>',methods=['PUT'])
 
 @jwt_required()
 
@@ -167,11 +168,7 @@ def mis_jour_supprim_cat(id):
         cat.nomCategori =data.get('nomCategori', cat.nomCategori)
         db.session.commit()
         return jsonify({'mesage':'categorie modifié avec succée'}),200
-    
-    if request.method == 'DELETE':
-        db.session.delete(cat)
-        db.session.commit()
-        return jsonify ({'mesage': 'categorie supprimé avec succée'}),200
+   
     
 # admin recupere t evenement
 @api.route('/api/admin/evenements', methods=['GET'])
@@ -251,9 +248,7 @@ def ajout_evenement():
     return jsonify({'message': 'Événement créé avec succès'}), 201
 
 @api.route('/api/admin/evenements/<int:id>', methods=['PUT','DELETE'])
-
 @jwt_required()
-
 def mise_ajour_supprim_evenement(id):
     event = db.session.get(Evenement,id)
     if not event:
@@ -278,3 +273,37 @@ def mise_ajour_supprim_evenement(id):
         db.session.delete(event)
         db.session.commit()
         return jsonify ({'mesage':'evenement supprimer avec succée'}),200
+@api.route('/api/admin/categori/<int:id>', methods=['GET'])
+@jwt_required()
+def get_categorie_by_id(id):
+    categori = Categories.query.get(id)
+    if categori:
+        return jsonify({'id': categori.id, 'nomCategori': categori.nomCategori}), 200
+    return jsonify({'erreur': 'categorie non trouvée'}), 404
+@api.route('/api/admin/categori/<int:id>', methods=['DELETE'])
+def delete_categorie(id):
+    categori = Categories.query.get(id)
+    if not categori:
+        return jsonify({'erreur': 'categorie non trouvée'}), 404
+
+    # Delete related events first
+    Evenement.query.filter_by(category_id=id).delete()
+
+    # Then delete the category
+    db.session.delete(categori)
+    db.session.commit()
+    return jsonify({'message': 'categorie et evenements associés supprimés avec succès'}), 200
+@api.route('/api/admin/utilisateurs', methods=['GET'])
+@jwt_required()
+def get_all_utilisateurs():
+    utilisateurs_list = utilisateur.query.all()
+    return jsonify([
+        {
+            'id': u.id,
+            'nomUtilisateur': u.nomUtilisateur,
+            'prenomUtilisateur': u.prenomUtilisateur,
+            'email': u.email,
+            'role': u.role
+        }
+        for u in utilisateurs_list
+    ]), 200
