@@ -49,30 +49,29 @@ Fonctionnalités :
 
 ### URL de Base
 
-`http://127.0.0.1:8000/movies`
+`http://127.0.0.1:5000/api/`
 
 ### Endpoints
 
-1. **Créer un Film**
-   - **POST** `/`
+1. **Inscription utilisateur**
+   - **POST** `/api/inscription`
    - Corps de la Requête :
      ```json
-     {
-       "title": "Inception",
-       "director": "Christopher Nolan",
-       "year": 2010,
-       "genre": "Science Fiction"
-     }
+    {
+  "nomUtilisateur": "Ali",
+  "prenomUtilisateur": "Ben Salah",
+  "email": "ali@example.com",
+  "motPasse": "123456",
+  "role": "CLIENT"
+  }
+
      ```
    - Réponse :
      ```json
-     {
-       "id": 1,
-       "title": "Inception",
-       "director": "Christopher Nolan",
-       "year": 2010,
-       "genre": "Science Fiction"
-     }
+      {
+  "message": "Utilisateur inscrit avec succès"
+  }
+
      ```
 
 2. **Récupérer Tous les Films**
