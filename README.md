@@ -107,7 +107,6 @@ des opérations pour la gestion des évènements et des catégories( CRUD ).
   }
 ]
 
-
 ## :rocket: Technologies ##
 
 The following tools were used in this project:
@@ -146,7 +145,7 @@ $ python app.py
 
 # Le serveur s'initialisera dans <http://localhost:4200>
 ```
-
+.
 ## :memo: License ##
 
 This project is under license from MIT. For more details, see the [LICENSE](LICENSE) file.
