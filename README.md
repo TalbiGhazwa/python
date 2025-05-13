@@ -35,14 +35,78 @@ des opérations pour la gestion des évènements et des catégories( CRUD ).
 :heavy_check_mark: accé public pour les évènements disponibles ;\
 :heavy_check_mark: Intégration de BD PostgreSQL ;\
 
-## :sparkles:   API ##
+## :gear: API Endpoints (JSON Format) ##
 
-:heavy_check_mark: authentification JWT ;\
-:heavy_check_mark: gestion des utilisateus selon le role( administrateur, client);\
-:heavy_check_mark: opérations CRUD aux évènements pour admin ;\
-:heavy_check_mark: opérations CRUD aux catégories pour admin ;\
-:heavy_check_mark: accé public pour les évènements disponibles ;\
-:heavy_check_mark: Intégration de BD PostgreSQL ;\
+```json
+[
+  {
+    "method": "POST",
+    "url": "/api/inscription",
+    "description": "Créer un nouvel utilisateur (inscription)",
+    "access": "Public"
+  },
+  {
+    "method": "POST",
+    "url": "/api/connexion",
+    "description": "Connexion d'un utilisateur avec retour de JWT",
+    "access": "Public"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/clients",
+    "description": "Récupérer tous les clients",
+    "access": "Admin (JWT requis)"
+  },
+  {
+    "method": "GET",
+    "url": "/api/public/categori",
+    "description": "Lister toutes les catégories (public)",
+    "access": "Public"
+  },
+  {
+    "method": "GET",
+    "url": "/api/public/evenements",
+    "description": "Lister tous les événements disponibles (public)",
+    "access": "Public"
+  },
+  {
+    "method": "GET",
+    "url": "/api/public/evenements/<id>",
+    "description": "Récupérer un événement par ID",
+    "access": "Public"
+  },
+  {
+    "method": "GET",
+    "url": "/api/categori/<id>",
+    "description": "Récupérer une catégorie par ID",
+    "access": "JWT requis"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/categori",
+    "description": "Récupérer toutes les catégories (admin)",
+    "access": "Admin (JWT requis)"
+  },
+  {
+    "method": "POST",
+    "url": "/api/admin/categori",
+    "description": "Ajouter une nouvelle catégorie (admin)",
+    "access": "Admin (JWT requis)"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/admin/categori/<id>",
+    "description": "Modifier une catégorie par ID (admin)",
+    "access": "Admin (JWT requis)"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/admin/categori/<id>",
+    "description": "Supprimer une catégorie par ID (admin)",
+    "access": "Admin (JWT requis)"
+  }
+]
+
 
 ## :rocket: Technologies ##
 
