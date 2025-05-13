@@ -45,59 +45,98 @@ Fonctionnalités :
 
 ## :gear: API Endpoints ##
 
-### 🔐 Authentification
+## Points d'Entrée de l'API
 
-- **POST** `/api/inscription`  
-  ➤ Créer un nouvel utilisateur (client par défaut)
+### URL de Base
 
-- **POST** `/api/connexion`  
-  ➤ Connexion d’un utilisateur et récupération du token JWT
+`http://127.0.0.1:8000/movies`
 
----
+### Endpoints
 
-### 👤 Utilisateur (admin)
+1. **Créer un Film**
+   - **POST** `/`
+   - Corps de la Requête :
+     ```json
+     {
+       "title": "Inception",
+       "director": "Christopher Nolan",
+       "year": 2010,
+       "genre": "Science Fiction"
+     }
+     ```
+   - Réponse :
+     ```json
+     {
+       "id": 1,
+       "title": "Inception",
+       "director": "Christopher Nolan",
+       "year": 2010,
+       "genre": "Science Fiction"
+     }
+     ```
 
-- **GET** `/api/admin/clients`  
-  ➤ Récupérer la liste des utilisateurs avec le rôle client  
-  _(JWT requis, rôle: admin)_
+2. **Récupérer Tous les Films**
+   - **GET** `/`
+   - Réponse :
+     ```json
+     [
+       {
+         "id": 1,
+         "title": "Inception",
+         "director": "Christopher Nolan",
+         "year": 2010,
+         "genre": "Science Fiction"
+       }
+     ]
+     ```
 
----
+3. **Récupérer un Film par ID**
+   - **GET** `/{movie_id}`
+   - Réponse :
+     ```json
+     {
+       "id": 1,
+       "title": "Inception",
+       "director": "Christopher Nolan",
+       "year": 2010,
+       "genre": "Science Fiction"
+     }
+     ```
 
-### 📂 Catégories
+4. **Mettre à Jour un Film**
+   - **PUT** `/{movie_id}`
+   - Corps de la Requête :
+     ```json
+     {
+       "title": "Inception",
+       "director": "Christopher Nolan",
+       "year": 2010,
+       "genre": "Thriller"
+     }
+     ```
+   - Réponse :
+     ```json
+     {
+       "id": 1,
+       "title": "Inception",
+       "director": "Christopher Nolan",
+       "year": 2010,
+       "genre": "Thriller"
+     }
+     ```
 
-- **GET** `/api/public/categori`  
-  ➤ Obtenir la liste des catégories disponibles (accessible au public)
-
-- **GET** `/api/categori/<id>`  
-  ➤ Détails d'une catégorie spécifique  
-  _(JWT requis, tous rôles)_
-
-- **GET** `/api/admin/categori`  
-  ➤ Lister toutes les catégories (admin uniquement)
-
-- **POST** `/api/admin/categori`  
-  ➤ Ajouter une nouvelle catégorie  
-  _(JWT requis, rôle: admin)_
-
-- **PUT** `/api/admin/categori/<id>`  
-  ➤ Mettre à jour une catégorie spécifique  
-  _(JWT requis, rôle: admin)_
-
-- **DELETE** `/api/admin/categori/<id>`  
-  ➤ Supprimer une catégorie  
-  _(JWT requis, rôle: admin)_
-
----
-
-### 🎫 Événements
-
-- **GET** `/api/public/evenements`  
-  ➤ Obtenir tous les événements disponibles publiquement
-
-- **GET** `/api/public/evenements/<id>`  
-  ➤ Détails d’un événement spécifique
-
-- **(Autres endpoints CRUD pour admin peuvent être ajoutés si implémentés)**
+5. **Supprimer un Film**
+   - **DELETE** `/{movie_id}`
+   - Réponse :
+     ```json
+     {
+       "id": 1,
+       "title": "Inception",
+       "director": "Christopher Nolan",
+       "year": 2010,
+       "genre": "Science Fiction"
+     }
+     ```
 
 ---
 
