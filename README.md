@@ -10,6 +10,7 @@
 <p align="center">
   <a href="#dart-about">About</a> &#xa0; | &#xa0; 
   <a href="#sparkles-features">Features</a> &#xa0; | &#xa0;
+  <a href="#gear-api-endpoints">API</a> &#xa0; | &#xa0;
   <a href="#rocket-technologies">Technologies</a> &#xa0; | &#xa0;
   <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
   <a href="#checkered_flag-starting">Starting</a> &#xa0; | &#xa0;
@@ -21,95 +22,88 @@
 
 ## :dart: About ##
 
-Il s'agit d'un back-end développé avec "Flask" pour la gestion des évènement et  billéterie.
-l'authentification avec JWT avec un accés selon le role d'utilisateur administrateur ou client.
-des opérations pour la gestion des évènements et des catégories( CRUD ).
+Il s'agit d'un back-end développé avec **Flask** pour la gestion des événements et de la billetterie.
 
+Fonctionnalités :
+- Authentification basée sur JWT
+- Accès différencié selon le rôle (administrateur / client)
+- CRUD sur événements et catégories pour les admins
+- Accès public aux événements disponibles
+
+---
 
 ## :sparkles: Features ##
 
-:heavy_check_mark: authentification JWT ;\
-:heavy_check_mark: gestion des utilisateus selon le role( administrateur, client);\
-:heavy_check_mark: opérations CRUD aux évènements pour admin ;\
-:heavy_check_mark: opérations CRUD aux catégories pour admin ;\
-:heavy_check_mark: accé public pour les évènements disponibles ;\
-:heavy_check_mark: Intégration de BD PostgreSQL ;\
+:heavy_check_mark: Authentification JWT ;  
+:heavy_check_mark: Rôles utilisateurs (admin, client) ;  
+:heavy_check_mark: CRUD événements pour admin ;  
+:heavy_check_mark: CRUD catégories pour admin ;  
+:heavy_check_mark: Accès public aux événements ;  
+:heavy_check_mark: Intégration PostgreSQL ;  
 
-## :gear: API Endpoints (JSON Format) ##
+---
 
-```json
-[
-  {
-    "method": "POST",
-    "url": "/api/inscription",
-    "description": "Créer un nouvel utilisateur (inscription)",
-    "access": "Public"
-  },
-  {
-    "method": "POST",
-    "url": "/api/connexion",
-    "description": "Connexion d'un utilisateur avec retour de JWT",
-    "access": "Public"
-  },
-  {
-    "method": "GET",
-    "url": "/api/admin/clients",
-    "description": "Récupérer tous les clients",
-    "access": "Admin (JWT requis)"
-  },
-  {
-    "method": "GET",
-    "url": "/api/public/categori",
-    "description": "Lister toutes les catégories (public)",
-    "access": "Public"
-  },
-  {
-    "method": "GET",
-    "url": "/api/public/evenements",
-    "description": "Lister tous les événements disponibles (public)",
-    "access": "Public"
-  },
-  {
-    "method": "GET",
-    "url": "/api/public/evenements/<id>",
-    "description": "Récupérer un événement par ID",
-    "access": "Public"
-  },
-  {
-    "method": "GET",
-    "url": "/api/categori/<id>",
-    "description": "Récupérer une catégorie par ID",
-    "access": "JWT requis"
-  },
-  {
-    "method": "GET",
-    "url": "/api/admin/categori",
-    "description": "Récupérer toutes les catégories (admin)",
-    "access": "Admin (JWT requis)"
-  },
-  {
-    "method": "POST",
-    "url": "/api/admin/categori",
-    "description": "Ajouter une nouvelle catégorie (admin)",
-    "access": "Admin (JWT requis)"
-  },
-  {
-    "method": "PUT",
-    "url": "/api/admin/categori/<id>",
-    "description": "Modifier une catégorie par ID (admin)",
-    "access": "Admin (JWT requis)"
-  },
-  {
-    "method": "DELETE",
-    "url": "/api/admin/categori/<id>",
-    "description": "Supprimer une catégorie par ID (admin)",
-    "access": "Admin (JWT requis)"
-  }
-]
+## :gear: API Endpoints ##
+
+### 🔐 Authentification
+
+- **POST** `/api/inscription`  
+  ➤ Créer un nouvel utilisateur (client par défaut)
+
+- **POST** `/api/connexion`  
+  ➤ Connexion d’un utilisateur et récupération du token JWT
+
+---
+
+### 👤 Utilisateur (admin)
+
+- **GET** `/api/admin/clients`  
+  ➤ Récupérer la liste des utilisateurs avec le rôle client  
+  _(JWT requis, rôle: admin)_
+
+---
+
+### 📂 Catégories
+
+- **GET** `/api/public/categori`  
+  ➤ Obtenir la liste des catégories disponibles (accessible au public)
+
+- **GET** `/api/categori/<id>`  
+  ➤ Détails d'une catégorie spécifique  
+  _(JWT requis, tous rôles)_
+
+- **GET** `/api/admin/categori`  
+  ➤ Lister toutes les catégories (admin uniquement)
+
+- **POST** `/api/admin/categori`  
+  ➤ Ajouter une nouvelle catégorie  
+  _(JWT requis, rôle: admin)_
+
+- **PUT** `/api/admin/categori/<id>`  
+  ➤ Mettre à jour une catégorie spécifique  
+  _(JWT requis, rôle: admin)_
+
+- **DELETE** `/api/admin/categori/<id>`  
+  ➤ Supprimer une catégorie  
+  _(JWT requis, rôle: admin)_
+
+---
+
+### 🎫 Événements
+
+- **GET** `/api/public/evenements`  
+  ➤ Obtenir tous les événements disponibles publiquement
+
+- **GET** `/api/public/evenements/<id>`  
+  ➤ Détails d’un événement spécifique
+
+- **(Autres endpoints CRUD pour admin peuvent être ajoutés si implémentés)**
+
+---
 
 ## :rocket: Technologies ##
 
-The following tools were used in this project:
+Ce projet utilise les technologies suivantes :
 
 - [Python](https://www.python.org/)
 - [Flask](https://flask.palletsprojects.com/)
@@ -119,40 +113,33 @@ The following tools were used in this project:
 - [PostgreSQL](https://www.postgresql.org/)
 - [Render](https://render.com/)
 
+---
 
 ## :white_check_mark: Requirements ##
 
-Avant de démarrer vous devez avoir [GIT](https://git-scm.com) , [Python](https://www.python.org/) et [pip](https://pip.pypa.io/) installés.
+- [GIT](https://git-scm.com)  
+- [Python](https://www.python.org/)  
+- [pip](https://pip.pypa.io/)  
+
+---
 
 ## :checkered_flag: Starting ##
 
 ```bash
-# Cloner le project
-$ git clone https://github.com/TalbiGhazwa/python
+# Cloner le projet
+git clone https://github.com/TalbiGhazwa/python
 
-# Accée au projet
-$ cd python
+# Accéder au dossier du projet
+cd python
 
-# créer un environnement virtuel
-$ python -m venv venv
-$ source venv/bin/activate
+# Créer et activer un environnement virtuel
+python -m venv venv
+source venv/bin/activate   # Sous Windows : venv\Scripts\activate
 
-# Installer les dependences
-$ pip install -r requirements.txt
+# Installer les dépendances
+pip install -r requirements.txt
 
-# Run le projet
-$ python app.py
+# Lancer le projet
+python app.py
 
-# Le serveur s'initialisera dans <http://localhost:4200>
-```
-.
-## :memo: License ##
-
-This project is under license from MIT. For more details, see the [LICENSE](LICENSE) file.
-
-
-Made with :heart: by <a href="https://github.com/TalbiGhazwa" target="_blank">TALBI Ghazwa</a>
-
-&#xa0;
-
-<a href="#top">Back to top</a>
+# Serveur accessible sur http://localhost:4200
