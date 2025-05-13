@@ -58,19 +58,19 @@ Fonctionnalités :
    - Corps de la Requête :
      ```json
     {
-  "nomUtilisateur": "Ali",
-  "prenomUtilisateur": "Ben Salah",
-  "email": "ali@example.com",
-  "motPasse": "123456",
-  "role": "CLIENT"
-  }
+      "nomUtilisateur": "Ali",
+      "prenomUtilisateur": "Ben Salah",
+      "email": "ali@example.com",
+      "motPasse": "123456",
+      "role": "CLIENT"
+    }
 
      ```
    - Réponse :
      ```json
       {
-  "message": "Utilisateur inscrit avec succès"
-  }
+    "message": "Utilisateur inscrit avec succès"
+     }
 
      ```
 
