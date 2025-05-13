@@ -1,2 +1,2 @@
-# ignore tous le fichier qui ne doit pas etre commit dans github 
-.env
+# empéche l'apparence sur git
+# .env 

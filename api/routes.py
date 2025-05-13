@@ -10,7 +10,8 @@ import pymysql
 api = Blueprint('api',__name__)
 
 CORS(api, resources={r"/*": {"origins":"*"}})
-
+from dotenv import load_dotenv
+import os
 @api.route('/api/inscription', methods=['POST'])
 def inscription():
     data = request.json

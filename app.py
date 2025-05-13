@@ -24,11 +24,11 @@ db.init_app(app)
 
 # creer compte admin
 def creer_compte_admin():
-    email_admin = "admin@admin.com"
-    password_admin = "admin789"
+    email_admin = os.getenv('ADMINMAIL')
+    password_admin = os.getenv('ADMINPASS')
     admin_existe = utilisateur.query.filter_by(email = email_admin).first()
     if not admin_existe:
-        password_hashed = generate_password_hash(password_admin, method='pbkdf2:sha256')
+        password_hashed = generate_password_hash(password_admin, method=os.getenv('HASHPASSWORD'))
         utilisateur_admin = utilisateur(email=email_admin, nomUtilisateur="admin",prenomUtilisateur="admin",motPasse=password_hashed, role="ADMIN")
         db.session.add(utilisateur_admin)
         db.session.commit()
