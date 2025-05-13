@@ -14,7 +14,7 @@
   <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
   <a href="#checkered_flag-starting">Starting</a> &#xa0; | &#xa0;
   <a href="#memo-license">License</a> &#xa0; | &#xa0;
-  <a href="https://github.com/https://github.com/TalbiGhazwa" target="_blank">Author</a>
+  <a href="https://github.com/TalbiGhazwa" target="_blank">Author</a>
 </p>
 
 <br>
@@ -27,6 +27,15 @@ des opérations pour la gestion des évènements et des catégories( CRUD ).
 
 
 ## :sparkles: Features ##
+
+:heavy_check_mark: authentification JWT ;\
+:heavy_check_mark: gestion des utilisateus selon le role( administrateur, client);\
+:heavy_check_mark: opérations CRUD aux évènements pour admin ;\
+:heavy_check_mark: opérations CRUD aux catégories pour admin ;\
+:heavy_check_mark: accé public pour les évènements disponibles ;\
+:heavy_check_mark: Intégration de BD PostgreSQL ;\
+
+## :sparkles:   API ##
 
 :heavy_check_mark: authentification JWT ;\
 :heavy_check_mark: gestion des utilisateus selon le role( administrateur, client);\
@@ -50,7 +59,7 @@ The following tools were used in this project:
 
 ## :white_check_mark: Requirements ##
 
-Avant de démarrer vous devez avoir [GIT](https://git-scm.com) , [Python](https://www.python.org/) et [pip] (https://pip.pypa.io/) installés.
+Avant de démarrer vous devez avoir [GIT](https://git-scm.com) , [Python](https://www.python.org/) et [pip](https://pip.pypa.io/) installés.
 
 ## :checkered_flag: Starting ##
 
