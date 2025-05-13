@@ -7,14 +7,17 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from api import api
 import pymysql
-pymysql.install_as_MySQLdb
-
+pymysql.install_as_MySQLdb()
+from dotenv import load_dotenv
+import os
 
 db = SQLAlchemy()
 
 def init_db(app):
-    app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:Ghazwa_1993@localhost:3306/eticket'
+    app.config['SQLALCHEMY_DATABASE_URI']=os.getenv('DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=True
+    app.config['JWT_SECRET_KEY']=os.getenv('JWT_SECRET_KEY')
+
 
    
    

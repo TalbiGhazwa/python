@@ -108,7 +108,7 @@ def get_evenement(id):
 
 @jwt_required()
 
-def manage_categorie_id():
+def manage_categorie_id(id):
         categori = Categories.query.get(id)
         if categori:
             return jsonify({'id':categori.id,'nomCategori':categori.nomCategori}),200
@@ -128,48 +128,49 @@ def manage_categorie_id():
         return jsonify({'message':'categorie ajouter avec succée'}),201
 """)
 
+
 @api.route('/api/admin/categori',methods=['GET'])
-
-@jwt_required
-
+@jwt_required()
 def get_cat_admin():
     cat = Categories.query.all()
-    return jsonify({'id':cat.id, 'nomCategori':cat.nomCategori}),200
+    return jsonify([{
+        'id': c.id,
+        'nomCategori': c.nomCategori
+    } for c in cat]), 200
+
 
 #que admin peut ajouter une categorie
 @api.route('/api/admin/categori',methods=['POST'])
-
 @jwt_required()
-
 def ajout_cat():
     data = request.json
     nom_categorie = data.get('nomCategori')
     if not nom_categorie:
-        return jsonify({'erreur':'categorie pas trouvée'}),400
+        return jsonify({'erreur':'nom categorie requis'}),400
     if Categories.query.filter_by(nomCategori=nom_categorie).first():
-        return jsonify({'erreur':'categorie existe pas'}),400
+        return jsonify({'erreur':'categorie existe déjà'}),400
     new_cat = Categories(nomCategori=nom_categorie)
     db.session.add(new_cat)
     db.session.commit()
-    return jsonify ({'mesage':'categorie ajoutée avec succée'}),201
+    return jsonify({'message':'categorie ajoutée avec succès'}),201
 
 #admin modif || supprime categorie
-@api.route('/api/admin/categori/<int:id>',methods=['PUT'])
-
+@api.route('/api/admin/categori/<int:id>', methods=['PUT'])
 @jwt_required()
-
-def mis_jour_supprim_cat(id):
-    cat = Categories.query.get(id)
-    if not cat:
-        return jsonify({'erreur':'categorie non trouvée'}),404
-    
-    if request.method == 'PUT':
-        data = request.json
-        cat.nomCategori =data.get('nomCategori', cat.nomCategori)
-        db.session.commit()
-        return jsonify({'mesage':'categorie modifié avec succée'}),200
-   
-    
+def modifier_categorie(id):
+    categorie = Categories.query.get(id)
+    if not categorie:
+        return jsonify({'erreur': 'categorie non trouvée'}),404
+    data = request.json
+    nom = data.get('nomCategori')
+    if not nom:
+        return jsonify({'erreur': 'nom categorie requis'}),400
+    if Categories.query.filter(Categories.nomCategori == nom, Categories.id != id).first():
+        return jsonify({'erreur': 'categorie avec ce nom existe déjà'}),400
+    categorie.nomCategori = nom
+    db.session.commit()
+    return jsonify({'message': 'categorie modifiée avec succès'}),200
+ 
 # admin recupere t evenement
 @api.route('/api/admin/evenements', methods=['GET'])
 

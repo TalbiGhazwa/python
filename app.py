@@ -9,11 +9,15 @@ from api import api
 import pymysql
 
 from src.config.database import init_db
-pymysql.install_as_MySQLdb
+pymysql.install_as_MySQLdb()
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Load variables from .env file
+
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins":"*"}})
 init_db(app)
-app.config['JWT_SECRET_KEY']='Ghazwa' #code-clef-secret
 
 jwt = JWTManager(app)
 db.init_app(app)
