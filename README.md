@@ -28,7 +28,7 @@ Fonctionnalités :
 - Authentification basée sur JWT
 - Accès différencié selon le rôle (administrateur / client)
 - CRUD sur événements et catégories pour les admins
-- Accès public aux événements disponibles
+- Accès public aux événements, et aux catégories disponibles
 
 ---
 
@@ -42,102 +42,6 @@ Fonctionnalités :
 :heavy_check_mark: Intégration PostgreSQL ;  
 
 ---
-
-## :gear: API Endpoints ##
-
-## Points d'Entrée de l'API
-
-### URL de Base
-
-`http://127.0.0.1:5000/api/`
-
-### Endpoints
-
-1. **Inscription utilisateur**
-   - **POST** `/api/inscription`
-   - Corps de la Requête :
-     ```json
-      {
-        "nomUtilisateur": "Ali",
-        "prenomUtilisateur": "Ben Salah",
-        "email": "ali@example.com",
-        "motPasse": "123456",
-        "role": "CLIENT"
-      }
-
-     ```
-   - Réponse :
-     ```json
-      {
-        "message": "Utilisateur inscrit avec succès"
-      }
-```
-
-2. **Récupérer Tous les Films**
-   - **GET** `/`
-   - Réponse :
-     ```json
-     [
-       {
-         "id": 1,
-         "title": "Inception",
-         "director": "Christopher Nolan",
-         "year": 2010,
-         "genre": "Science Fiction"
-       }
-     ]
-     ```
-
-3. **Récupérer un Film par ID**
-   - **GET** `/{movie_id}`
-   - Réponse :
-     ```json
-     {
-       "id": 1,
-       "title": "Inception",
-       "director": "Christopher Nolan",
-       "year": 2010,
-       "genre": "Science Fiction"
-     }
-     ```
-
-4. **Mettre à Jour un Film**
-   - **PUT** `/{movie_id}`
-   - Corps de la Requête :
-     ```json
-     {
-       "title": "Inception",
-       "director": "Christopher Nolan",
-       "year": 2010,
-       "genre": "Thriller"
-     }
-     ```
-   - Réponse :
-     ```json
-     {
-       "id": 1,
-       "title": "Inception",
-       "director": "Christopher Nolan",
-       "year": 2010,
-       "genre": "Thriller"
-     }
-     ```
-
-5. **Supprimer un Film**
-   - **DELETE** `/{movie_id}`
-   - Réponse :
-     ```json
-     {
-       "id": 1,
-       "title": "Inception",
-       "director": "Christopher Nolan",
-       "year": 2010,
-       "genre": "Science Fiction"
-     }
-     ```
-
----
-
 ## :rocket: Technologies ##
 
 Ce projet utilise les technologies suivantes :
@@ -153,30 +57,251 @@ Ce projet utilise les technologies suivantes :
 ---
 
 ## :white_check_mark: Requirements ##
-
-- [GIT](https://git-scm.com)  
+ 
 - [Python](https://www.python.org/)  
 - [pip](https://pip.pypa.io/)  
+- [GIT](https://git-scm.com) 
 
----
 
 ## :checkered_flag: Starting ##
 
-```bash
+
 # Cloner le projet
-git clone https://github.com/TalbiGhazwa/python
-
+```bash
+$ git clone https://github.com/TalbiGhazwa/python
+```
 # Accéder au dossier du projet
-cd python
-
+```bash
+$ cd python
+```
 # Créer et activer un environnement virtuel
-python -m venv venv
-source venv/bin/activate   # Sous Windows : venv\Scripts\activate
-
+```bash
+$ python -m venv venv
+$ source venv/bin/activate   
+```
 # Installer les dépendances
-pip install -r requirements.txt
-
+```bash
+$ pip install -r requirements.txt
+```
 # Lancer le projet
-python app.py
+```bash
+$ python app.py
+```
+# Serveur accessible sur :
+`http://localhost:4200`
 
-# Serveur accessible sur http://localhost:4200
+## :gear: API Endpoints ##
+
+## Points d'Entrée de l'API
+
+### URL de Base
+
+`http://127.0.0.1:5000/api/`
+
+### Endpoints
+
+1. ** Inscription d'utilisateur **
+  - **POST**  `/api/inscription`
+   - Corps de la Requête :
+     ```json
+      {
+        "nomUtilisateur": "Dupon",
+        "prenomUtilisateur": "Jean",
+        "email": "DuponJean@gmail.com",
+        "motPasse": "jean123",
+        "role": "CLIENT"
+      }
+
+     ```
+   - Réponse :
+     ```json
+      {
+        "message": "Utilisateur inscrit avec succès"
+      }
+    ```
+2. ** Connexion **
+  - **POST**  `/api/connexion`
+   - Corps de la Requête :
+
+     ```json
+      {
+        "email": "DuponJean@gmail.com",
+        "motPasse": "jean123",
+        "role": "CLIENT"
+      }
+
+     ```
+   - Réponse :
+     ```json
+      {
+        "access_token": "eyJ0eX....."
+      }
+```
+3. ** Ajouter une catégorie ( ADMIN )**
+  - **POST**  `/api/admin/categori`
+   - Corps de la Requête :
+     ```json
+      {
+        "nomCategori": "Sport",
+      }
+
+     ```
+   - Réponse :
+     ```json
+      {
+        "message": "categorie ajouté avec succée"
+      }
+```
+3. ** modifier une catégorie ( ADMIN )**
+  - **PUT**  `/api/admin/categori/1`
+   - Corps de la Requête :
+     ```json
+      {
+        "nomCategori": "Sport",
+      }
+
+     ```
+   - Réponse :
+     ```json
+      {
+        "message": "modification effectuer avec succée"
+      }
+```
+4. ** supprimer une catégorie ( ADMIN )**
+  - **DELETE**  `/api/admin/categori/1`
+   - Corps de la Requête :
+     ```json
+      {
+        "nomCategori": "Sport"
+      }
+
+     ```
+   - Réponse :
+     ```json
+      {
+        "message": "categori supprimer avec succée"
+      }
+```
+5. ** Ajouter un évènement ( ADMIN )**
+  - **POST**  `/api/admin/evenements`
+   - Corps de la Requête :
+     ```json
+      {
+        "nomEvenement": "France - espagne",
+        "typeEvenement": "football",
+        "dateEvenement": "10-06-2025",
+        "PrixEvenement": "500",
+        "adresse": "stade de france",
+        "category_id" : 1
+      }
+
+     ```
+   - Réponse :
+     ```json
+      {
+        "message": "Evenement ajouter avec succée"
+      }
+```
+6. ** modifier ou supprimer un évènement ( ID ) **
+  - **PUT**  `/api/admin/evenements/1`
+  - **DELETE**  `/api/admin/evenements/1`
+
+   - Corps de la Requête :
+     ```json
+      {
+        "nomEvenement": "France - espagne",
+        "typeEvenement": "football",
+        "dateEvenement": "10-06-2025",
+        "PrixEvenement": 600,
+        "adresse": "stade de france",
+        "category_id" : 1
+      }
+
+     ```
+   - Réponse modification:
+     ```json
+      {
+        "message": "Evenement modifier avec succée"
+      }
+    - Réponse suppression:
+     ```json
+      {
+        "message": "Evenement supprimer avec succée"
+      }
+     ```
+7. ** Récupérer tous les utilisateurs (pour ADMIN) **
+  - **GET**  `/api/admin/clients`
+   - Corps de la Requête :
+
+     ```json
+     [
+      {
+        "id" : 1 ,
+        "nomUtilisateur": "Dupon",
+        "prenomUtilisateur": "Jean",
+        "email": "DuponJean@gmail.com",
+        "motPasse": "jean123",
+        "role": "CLIENT"
+      },
+      {
+        "nomUtilisateur": "garnier",
+        "prenomUtilisateur": "isabelle",
+        "email": "DuponJean@gmail.com",
+        "motPasse": "isabelle123",
+        "role": "CLIENT"
+      },
+      ....
+      ]
+    ```
+8. ** Récupérer liste des catégories ( publique ) **
+  - **GET**  `/api/public/categori`
+  - Réponse :
+     ```json
+     [
+       {
+         "id": 1,
+         "nomCategori": "football"
+         
+       },
+       {
+         "id": 2,
+         "nomCategori": "handball"
+         
+       },
+       ...
+     ]
+     ```
+9. ** Récupérer liste des évènements ( publique ) **
+  - **GET**  `/api/public/evenements`
+  - Réponse :
+     ```json
+     [
+       {
+        "id" : 1,
+        "nomEvenement": "France - espagne",
+        "typeEvenement": "football",
+        "dateEvenement": "10-06-2025",
+        "PrixEvenement": 600,
+        "adresse": "stade de france",
+        "category_id" : 1
+         
+       },
+       ...
+     ]
+     ```
+10. ** Détail d'un évènement ( ID ) **
+  - **GET**  `/api/public/evenements/1`
+  - Réponse :
+     ```json
+       {
+        "id" : 1,
+        "nomEvenement": "France - espagne",
+        "typeEvenement": "football",
+        "dateEvenement": "10-06-2025",
+        "PrixEvenement": 600,
+        "adresse": "stade de france",
+        "category_id" : 1
+         
+       }
+     ```
+
