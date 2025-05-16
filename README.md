@@ -89,219 +89,251 @@ $ python app.py
 ```
 # Serveur accessible sur :
 `http://localhost:4200`
-
 ## :gear: API Endpoints ##
 
-## Points d'Entrée de l'API
-
-### URL de Base
-
+### 🔗 URL de Base
 `http://127.0.0.1:5000/api/`
 
-### Endpoints
+---
 
-1. ** Inscription d'utilisateur **
-  - **POST**  `/api/inscription`
-   - Corps de la Requête :
-     ```json
-      {
-        "nomUtilisateur": "Dupon",
-        "prenomUtilisateur": "Jean",
-        "email": "DuponJean@gmail.com",
-        "motPasse": "jean123",
-        "role": "CLIENT"
-      }
+### 🔐 Authentification
 
-     ```
-   - Réponse :
-     ```json
-      {
-        "message": "Utilisateur inscrit avec succès"
-      }
-    ```
-2. ** Connexion **
-  - **POST**  `/api/connexion`
-   - Corps de la Requête :
-
-     ```json
-      {
-        "email": "DuponJean@gmail.com",
-        "motPasse": "jean123",
-        "role": "CLIENT"
-      }
-
-     ```
-   - Réponse :
-     ```json
-      {
-        "access_token": "eyJ0eX....."
-      }
+#### 1. **Inscription d'utilisateur**
+- **Méthode :** POST  
+- **URL :** `/api/inscription`  
+- **Corps de la requête :**
+```json
+{
+  "nomUtilisateur": "Dupon",
+  "prenomUtilisateur": "Jean",
+  "email": "DuponJean@gmail.com",
+  "motPasse": "jean123",
+  "role": "CLIENT"
+}
 ```
-3. ** Ajouter une catégorie ( ADMIN )**
-  - **POST**  `/api/admin/categori`
-   - Corps de la Requête :
-     ```json
-      {
-        "nomCategori": "Sport"
-      }
-
-     ```
-   - Réponse :
-     ```json
-      {
-        "message": "categorie ajouté avec succée"
-      }
+- **Réponse :**
+```json
+{
+  "message": "Utilisateur inscrit avec succès"
+}
 ```
-4. ** modifier une catégorie ( ADMIN )**
-  - **PUT**  `/api/admin/categori/1`
-   - Corps de la Requête :
-     ```json
-      {
-        "nomCategori": "Sport",
-      }
 
-     ```
-   - Réponse :
-     ```json
-      {
-        "message": "modification effectuer avec succée"
-      }
+#### 2. **Connexion**
+- **Méthode :** POST  
+- **URL :** `/api/connexion`  
+- **Corps de la requête :**
+```json
+{
+  "email": "DuponJean@gmail.com",
+  "motPasse": "jean123",
+  "role": "CLIENT"
+}
 ```
-5. ** supprimer une catégorie ( ADMIN )**
-  - **DELETE**  `/api/admin/categori/1`
-   - Corps de la Requête :
-     ```json
-      {
-        "nomCategori": "Sport"
-      }
-
-     ```
-   - Réponse :
-     ```json
-      {
-        "message": "categori supprimer avec succée"
-      }
+- **Réponse :**
+```json
+{
+  "access_token": "eyJ0eX....."
+}
 ```
-6. ** Ajouter un évènement ( ADMIN )**
-  - **POST**  `/api/admin/evenements`
-   - Corps de la Requête :
-     ```json
-      {
-        "nomEvenement": "France - espagne",
-        "typeEvenement": "football",
-        "dateEvenement": "10-06-2025",
-        "PrixEvenement": "500",
-        "adresse": "stade de france",
-        "category_id" : 1
-      }
 
-     ```
-   - Réponse :
-     ```json
-      {
-        "message": "Evenement ajouter avec succée"
-      }
+---
+
+### 🧑‍💼 Admin : Catégories
+
+#### 3. **Ajouter une catégorie**
+- **Méthode :** POST  
+- **URL :** `/api/admin/categori`  
+- **Corps de la requête :**
+```json
+{
+  "nomCategori": "Sport"
+}
 ```
-7. ** modifier ou supprimer un évènement ( ID ) **
-  - **PUT**  `/api/admin/evenements/1`
-  - **DELETE**  `/api/admin/evenements/1`
+- **Réponse :**
+```json
+{
+  "message": "categorie ajouté avec succée"
+}
+```
 
-   - Corps de la Requête :
-     ```json
-      {
-        "nomEvenement": "France - espagne",
-        "typeEvenement": "football",
-        "dateEvenement": "10-06-2025",
-        "PrixEvenement": 600,
-        "adresse": "stade de france",
-        "category_id" : 1
-      }
+#### 4. **Modifier une catégorie**
+- **Méthode :** PUT  
+- **URL :** `/api/admin/categori/1`  
+- **Corps de la requête :**
+```json
+{
+  "nomCategori": "Sport"
+}
+```
+- **Réponse :**
+```json
+{
+  "message": "modification effectuer avec succée"
+}
+```
 
-     ```
-   - Réponse modification:
-     ```json
-      {
-        "message": "Evenement modifier avec succée"
-      }
-    - Réponse suppression:
-     ```json
-      {
-        "message": "Evenement supprimer avec succée"
-      }
-     ```
-8. ** Récupérer tous les utilisateurs (pour ADMIN) **
-  - **GET**  `/api/admin/clients`
-   - Corps de la Requête :
+#### 5. **Supprimer une catégorie**
+- **Méthode :** DELETE  
+- **URL :** `/api/admin/categori/1`  
+- **Corps de la requête :**
+```json
+{
+  "nomCategori": "Sport"
+}
+```
+- **Réponse :**
+```json
+{
+  "message": "categori supprimer avec succée"
+}
+```
 
-     ```json
-     [
-      {
-        "id" : 1 ,
-        "nomUtilisateur": "Dupon",
-        "prenomUtilisateur": "Jean",
-        "email": "DuponJean@gmail.com",
-        "motPasse": "jean123",
-        "role": "CLIENT"
-      },
-      {
-        "nomUtilisateur": "garnier",
-        "prenomUtilisateur": "isabelle",
-        "email": "DuponJean@gmail.com",
-        "motPasse": "isabelle123",
-        "role": "CLIENT"
-      },
-      ....
-      ]
-    ```
-9. ** Récupérer liste des catégories ( publique ) **
- - **GET**  `/api/public/categori`
-  - Réponse :
-    ```json
-     [
-       {
-         "id": 1,
-         "nomCategori": "football"
-        },
-       {
-         "id": 2,
-         "nomCategori": "handball"
-       },
-       ...
-     ]
+---
 
-     ```
-     
-10. ** Récupérer liste des évènements ( publique ) **
-  - **GET**  `/api/public/evenements`
-  - Réponse :
-     ```json
-     [
-       {
-        "id" : 1,
-        "nomEvenement": "France - espagne",
-        "typeEvenement": "football",
-        "dateEvenement": "10-06-2025",
-        "PrixEvenement": 600,
-        "adresse": "stade de france",
-        "category_id" : 1
-         
-       },
-       ...
-     ]
-     ```
-11. ** Détail d'un évènement ( ID ) **
-  - **GET**  `/api/public/evenements/1`
-  - Réponse :
-     ```json
-       {
-        "id" : 1,
-        "nomEvenement": "France - espagne",
-        "typeEvenement": "football",
-        "dateEvenement": "10-06-2025",
-        "PrixEvenement": 600,
-        "adresse": "stade de france",
-        "category_id" : 1
-         
-       }
-     ```
+### 🧑‍💼 Admin : Événements
 
+#### 6. **Ajouter un évènement**
+- **Méthode :** POST  
+- **URL :** `/api/admin/evenements`  
+- **Corps de la requête :**
+```json
+{
+  "nomEvenement": "France - espagne",
+  "typeEvenement": "football",
+  "dateEvenement": "10-06-2025",
+  "PrixEvenement": "500",
+  "adresse": "stade de france",
+  "category_id": 1
+}
+```
+- **Réponse :**
+```json
+{
+  "message": "Evenement ajouter avec succée"
+}
+```
+
+#### 7. **Modifier un évènement**
+- **Méthode :** PUT  
+- **URL :** `/api/admin/evenements/1`  
+- **Corps de la requête :**
+```json
+{
+  "nomEvenement": "France - espagne",
+  "typeEvenement": "football",
+  "dateEvenement": "10-06-2025",
+  "PrixEvenement": 600,
+  "adresse": "stade de france",
+  "category_id": 1
+}
+```
+- **Réponse :**
+```json
+{
+  "message": "Evenement modifier avec succée"
+}
+```
+
+#### 8. **Supprimer un évènement**
+- **Méthode :** DELETE  
+- **URL :** `/api/admin/evenements/1`  
+- **Corps de la requête :**
+```json
+{
+  "nomEvenement": "France - espagne",
+  "typeEvenement": "football",
+  "dateEvenement": "10-06-2025",
+  "PrixEvenement": 600,
+  "adresse": "stade de france",
+  "category_id": 1
+}
+```
+- **Réponse :**
+```json
+{
+  "message": "Evenement supprimer avec succée"
+}
+```
+
+---
+
+### 🧑‍💼 Admin : Utilisateurs
+
+#### 9. **Récupérer tous les utilisateurs**
+- **Méthode :** GET  
+- **URL :** `/api/admin/clients`  
+- **Réponse :**
+```json
+[
+  {
+    "id": 1,
+    "nomUtilisateur": "Dupon",
+    "prenomUtilisateur": "Jean",
+    "email": "DuponJean@gmail.com",
+    "motPasse": "jean123",
+    "role": "CLIENT"
+  },
+  {
+    "nomUtilisateur": "garnier",
+    "prenomUtilisateur": "isabelle",
+    "email": "DuponJean@gmail.com",
+    "motPasse": "isabelle123",
+    "role": "CLIENT"
+  }
+]
+```
+
+---
+
+### 🌐 Public
+
+#### 10. **Récupérer liste des catégories**
+- **Méthode :** GET  
+- **URL :** `/api/public/categori`  
+- **Réponse :**
+```json
+[
+  {
+    "id": 1,
+    "nomCategori": "football"
+  },
+  {
+    "id": 2,
+    "nomCategori": "handball"
+  }
+]
+```
+
+#### 11. **Récupérer liste des évènements**
+- **Méthode :** GET  
+- **URL :** `/api/public/evenements`  
+- **Réponse :**
+```json
+[
+  {
+    "id": 1,
+    "nomEvenement": "France - espagne",
+    "typeEvenement": "football",
+    "dateEvenement": "10-06-2025",
+    "PrixEvenement": 600,
+    "adresse": "stade de france",
+    "category_id": 1
+  }
+]
+```
+
+#### 12. **Détail d'un évènement**
+- **Méthode :** GET  
+- **URL :** `/api/public/evenements/1`  
+- **Réponse :**
+```json
+{
+  "id": 1,
+  "nomEvenement": "France - espagne",
+  "typeEvenement": "football",
+  "dateEvenement": "10-06-2025",
+  "PrixEvenement": 600,
+  "adresse": "stade de france",
+  "category_id": 1
+}
+```
