@@ -142,7 +142,7 @@ $ python app.py
    - Corps de la Requête :
      ```json
       {
-        "nomCategori": "Sport",
+        "nomCategori": "Sport"
       }
 
      ```
@@ -152,7 +152,7 @@ $ python app.py
         "message": "categorie ajouté avec succée"
       }
 ```
-3. ** modifier une catégorie ( ADMIN )**
+4. ** modifier une catégorie ( ADMIN )**
   - **PUT**  `/api/admin/categori/1`
    - Corps de la Requête :
      ```json
@@ -167,7 +167,7 @@ $ python app.py
         "message": "modification effectuer avec succée"
       }
 ```
-4. ** supprimer une catégorie ( ADMIN )**
+5. ** supprimer une catégorie ( ADMIN )**
   - **DELETE**  `/api/admin/categori/1`
    - Corps de la Requête :
      ```json
@@ -182,7 +182,7 @@ $ python app.py
         "message": "categori supprimer avec succée"
       }
 ```
-5. ** Ajouter un évènement ( ADMIN )**
+6. ** Ajouter un évènement ( ADMIN )**
   - **POST**  `/api/admin/evenements`
    - Corps de la Requête :
      ```json
@@ -202,7 +202,7 @@ $ python app.py
         "message": "Evenement ajouter avec succée"
       }
 ```
-6. ** modifier ou supprimer un évènement ( ID ) **
+7. ** modifier ou supprimer un évènement ( ID ) **
   - **PUT**  `/api/admin/evenements/1`
   - **DELETE**  `/api/admin/evenements/1`
 
@@ -229,7 +229,7 @@ $ python app.py
         "message": "Evenement supprimer avec succée"
       }
      ```
-7. ** Récupérer tous les utilisateurs (pour ADMIN) **
+8. ** Récupérer tous les utilisateurs (pour ADMIN) **
   - **GET**  `/api/admin/clients`
    - Corps de la Requête :
 
@@ -253,25 +253,25 @@ $ python app.py
       ....
       ]
     ```
-8. ** Récupérer liste des catégories ( publique ) **
-  - **GET**  `/api/public/categori`
+9. ** Récupérer liste des catégories ( publique ) **
+ - **GET**  `/api/public/categori`
   - Réponse :
-     ```json
+    ```json
      [
        {
          "id": 1,
          "nomCategori": "football"
-         
-       },
+        },
        {
          "id": 2,
          "nomCategori": "handball"
-         
        },
        ...
      ]
+
      ```
-9. ** Récupérer liste des évènements ( publique ) **
+     
+10. ** Récupérer liste des évènements ( publique ) **
   - **GET**  `/api/public/evenements`
   - Réponse :
      ```json
@@ -289,7 +289,7 @@ $ python app.py
        ...
      ]
      ```
-10. ** Détail d'un évènement ( ID ) **
+11. ** Détail d'un évènement ( ID ) **
   - **GET**  `/api/public/evenements/1`
   - Réponse :
      ```json
