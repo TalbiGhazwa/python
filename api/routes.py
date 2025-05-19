@@ -1,6 +1,6 @@
-from modeles.modele import Categories, db, Evenement, utilisateur, comande, panier
+from modeles.modele import Categories, db, Evenement, utilisateur,Commande,CommandeItem, TicketType, PanierItem
 from werkzeug.security import generate_password_hash
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token
+from flask_jwt_extended import JWTManager, jwt_required,get_jwt_identity, create_access_token
 from flask_cors import cross_origin
 from flask_cors import CORS
 from flask import Flask, jsonify, request, Blueprint
@@ -36,6 +36,166 @@ def inscription():
     db.session.commit()
 
     return jsonify({'message': 'utilisateur crée avec succès'}), 201
+@api.route('/api/commandePanier', methods=['POST'])
+@jwt_required()
+def ajouter_au_panier():
+    data = request.json
+    utilisateur_id = get_jwt_identity()
+    evenement_id = data.get('evenement_id')
+    ticket_type_nom = data.get('ticket_type_nom')
+    quantite = data.get('quantite', 1)
+    prix = data.get('prix')  # utilisé pour créer un nouveau type si nécessaire
+
+    if not evenement_id or not ticket_type_nom:
+        return jsonify({'erreur': 'Les champs evenement_id et ticket_type_nom sont requis'}), 400
+
+    evenement = Evenement.query.get(evenement_id)
+    if not evenement:
+        return jsonify({'erreur': 'Événement introuvable'}), 404
+
+    # Vérifie si le type de ticket existe déjà pour cet événement
+    ticket_type = TicketType.query.filter_by(nom=ticket_type_nom, evenement_id=evenement_id).first()
+
+    # Si le type de ticket n'existe pas, on le crée
+    if not ticket_type:
+        if prix is None:
+            return jsonify({'erreur': 'Le prix est requis pour créer un nouveau type de ticket'}), 400
+        ticket_type = TicketType(nom=ticket_type_nom, prix=prix, evenement_id=evenement_id)
+        db.session.add(ticket_type)
+        db.session.commit()
+
+    # Vérifie si l'article existe déjà dans le panier
+    item_existant = PanierItem.query.filter_by(
+        utilisateur_id=utilisateur_id,
+        evenement_id=evenement_id,
+        ticket_type_id=ticket_type.id
+    ).first()
+
+    if item_existant:
+        item_existant.quantite += quantite
+        item_existant.total_prix = item_existant.quantite * ticket_type.prix
+    else:
+        item_existant = PanierItem(
+            utilisateur_id=utilisateur_id,
+            evenement_id=evenement_id,
+            ticket_type_id=ticket_type.id,
+            quantite=quantite,
+            total_prix=quantite * ticket_type.prix
+        )
+        db.session.add(item_existant)
+
+    db.session.commit()
+
+    return jsonify({'message': 'Article ajouté au panier avec succès'}), 201
+@api.route('/api/commande/supprimer', methods=['DELETE'])
+@jwt_required()
+def supprimer_commandes():
+    utilisateur_id = get_jwt_identity()
+    
+    # Récupérer toutes les commandes de l'utilisateur
+    commandes = Commande.query.filter_by(utilisateur_id=utilisateur_id).all()
+
+    for commande in commandes:
+        # Supprimer les items liés à chaque commande
+        CommandeItem.query.filter_by(commande_id=commande.id).delete()
+
+        # Supprimer la commande elle-même
+        db.session.delete(commande)
+
+    db.session.commit()
+    return jsonify({'message': 'Commandes supprimées avec succès'}), 200
+
+@api.route('/api/commandePanier/commande/info', methods=['GET'])
+@jwt_required()
+def commande_info():
+    utilisateur_id = get_jwt_identity()
+    commandes = Commande.query.filter_by(utilisateur_id=utilisateur_id).all()
+
+    resultat = []
+    for commande in commandes:
+        items = CommandeItem.query.filter_by(commande_id=commande.id).all()
+        item_details = []
+
+        for item in items:
+            ticket_type = TicketType.query.get(item.ticket_type_id)
+            evenement = Evenement.query.filter_by(id=ticket_type.evenement_id).first() if ticket_type else None
+
+            item_details.append({
+                'quantite': item.quantite,
+                'ticket_type': {
+                    'id': ticket_type.id,
+                    'nom': ticket_type.nom,
+                    'prix': ticket_type.prix
+                } if ticket_type else None,
+                'evenement': {
+                    'id': evenement.id,
+                    'nomEvenement': evenement.nomEvenement,
+                    'dateEvenement': evenement.dateEvenement,
+                    'typeEvenement': evenement.typeEvenement,
+                    'PrixEvenement': evenement.PrixEvenement,
+                    'adresse': evenement.adresse
+                } if evenement else None
+            })
+
+        resultat.append({
+            'commande_id': commande.id,
+            'total': commande.total,
+            'date_commande': commande.date_creation if hasattr(commande, 'date_creation') else 'N/A',
+            'items': item_details
+        })
+
+    return jsonify(resultat), 200
+
+@api.route('/api/commandePanier/utilisateur/info', methods=['GET'])
+@jwt_required()
+def info_utilisateur():
+    utilisateur_id = get_jwt_identity()
+    user = utilisateur.query.get(utilisateur_id)
+
+    if not user:
+        return jsonify({'erreur': 'Utilisateur non trouvé'}), 404
+
+    return jsonify({
+        'nom': user.nomUtilisateur,
+        'prenom': user.prenomUtilisateur,
+        'email': user.email
+    })
+
+
+@api.route('/api/commande/valider', methods=['POST'])
+@jwt_required()
+def valider_commande_utilisateur():
+    utilisateur_id = get_jwt_identity()
+
+    # Récupérer les articles du panier
+    panier_items = PanierItem.query.filter_by(utilisateur_id=utilisateur_id).all()
+    if not panier_items:
+        return jsonify({'erreur': 'Le panier est vide'}), 400
+
+    # Calculer le total
+    total = sum(item.total_prix for item in panier_items)
+
+    # Créer la commande
+    nouvelle_commande = Commande(utilisateur_id=utilisateur_id, total=total)
+    db.session.add(nouvelle_commande)
+    db.session.commit()
+
+    # Créer les items de la commande
+    for item in panier_items:
+        commande_item = CommandeItem(
+            commande_id=nouvelle_commande.id,
+            ticket_type_id=item.ticket_type_id,
+            quantite=item.quantite
+        )
+        db.session.add(commande_item)
+
+    # Vider le panier
+    for item in panier_items:
+        db.session.delete(item)
+
+    db.session.commit()
+
+    return jsonify({'message': 'Commande validée avec succès', 'commande_id': nouvelle_commande.id}), 201
 
 @api.route('/api/connexion', methods=['POST'])
 
@@ -49,6 +209,44 @@ def connexion():
         accer_token = create_access_token(identity=str(user.id), fresh=True)
         return jsonify({'access_token':accer_token, "role":user.role}),200
     return jsonify({'erreur':'invalide'}),401
+
+@api.route('/api/commandePanier/count', methods=['GET'])
+@jwt_required()
+def get_panier_count():
+    user_id = get_jwt_identity()  # récupère l'ID utilisateur du token JWT
+    count = PanierItem.query.filter_by(utilisateur_id=user_id).count()
+    return jsonify({'count': count})
+
+@api.route('/api/commandePanier/view', methods=['GET'])
+@jwt_required()
+def afficher_panier_utilisateur():
+    utilisateur_id = get_jwt_identity()
+    items = PanierItem.query.filter_by(utilisateur_id=utilisateur_id).all()
+
+    resultat = []
+    for item in items:
+        ticket_type = TicketType.query.get(item.ticket_type_id)
+        evenement = Evenement.query.get(item.evenement_id)
+
+        resultat.append({
+            'id': item.id,
+            'quantite': item.quantite,
+            'ticket_type': {
+                'id': ticket_type.id,
+                'nom': ticket_type.nom,
+                'prix': ticket_type.prix
+            } if ticket_type else None,
+            'evenement': {
+                'id': evenement.id,
+                'nomEvenement': evenement.nomEvenement,
+                'dateEvenement': evenement.dateEvenement,
+                'typeEvenement': evenement.typeEvenement,
+                'PrixEvenement': evenement.PrixEvenement,
+                'adresse': evenement.adresse
+            } if evenement else None
+        })
+
+    return jsonify(resultat), 200
 
 # recuperer tout les utilisateur de role ="client"
 @api.route('/api/admin/clients', methods=['GET'])

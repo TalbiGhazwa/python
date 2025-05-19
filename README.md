@@ -91,12 +91,12 @@ $ python app.py
 `http://localhost:4200`
 ## :gear: API Endpoints ##
 
-### 🔗 URL de Base
+### URL de Base
 `http://127.0.0.1:5000/api/`
 
 ---
 
-### 🔐 Authentification
+### Authentification
 
 #### 1. **Inscription d'utilisateur**
 - **Méthode :** POST  
@@ -132,15 +132,13 @@ $ python app.py
 - **Réponse :**
 ```json
 {
-  "access_token": "eyJ0eX....."
+  "access_token": "eyJ0eX..."
 }
 ```
 
 ---
 
-### 🧑‍💼 Admin : Catégories
-
-#### 3. **Ajouter une catégorie**
+#### 3. **Ajouter une catégorie ( admin )**
 - **Méthode :** POST  
 - **URL :** `/api/admin/categori`  
 - **Corps de la requête :**
@@ -156,7 +154,7 @@ $ python app.py
 }
 ```
 
-#### 4. **Modifier une catégorie**
+#### 4. **Modifier une catégorie ( admin )**
 - **Méthode :** PUT  
 - **URL :** `/api/admin/categori/1`  
 - **Corps de la requête :**
@@ -172,7 +170,7 @@ $ python app.py
 }
 ```
 
-#### 5. **Supprimer une catégorie**
+#### 5. **Supprimer une catégorie ( admin )**
 - **Méthode :** DELETE  
 - **URL :** `/api/admin/categori/1`  
 - **Corps de la requête :**
@@ -190,9 +188,7 @@ $ python app.py
 
 ---
 
-### 🧑‍💼 Admin : Événements
-
-#### 6. **Ajouter un évènement**
+#### 6. **Ajouter un évènement ( admin )**
 - **Méthode :** POST  
 - **URL :** `/api/admin/evenements`  
 - **Corps de la requête :**
@@ -213,7 +209,7 @@ $ python app.py
 }
 ```
 
-#### 7. **Modifier un évènement**
+#### 7. **Modifier un évènement ( admin )**
 - **Méthode :** PUT  
 - **URL :** `/api/admin/evenements/1`  
 - **Corps de la requête :**
@@ -234,7 +230,7 @@ $ python app.py
 }
 ```
 
-#### 8. **Supprimer un évènement**
+#### 8. **Supprimer un évènement ( admin )**
 - **Méthode :** DELETE  
 - **URL :** `/api/admin/evenements/1`  
 - **Corps de la requête :**
@@ -257,9 +253,8 @@ $ python app.py
 
 ---
 
-### 🧑‍💼 Admin : Utilisateurs
 
-#### 9. **Récupérer tous les utilisateurs**
+#### 9. **Récupérer tous les utilisateurs ( admin )**
 - **Méthode :** GET  
 - **URL :** `/api/admin/clients`  
 - **Réponse :**
@@ -285,9 +280,7 @@ $ python app.py
 
 ---
 
-### 🌐 Public
-
-#### 10. **Récupérer liste des catégories**
+#### 10. **Récupérer liste des catégories (public )**
 - **Méthode :** GET  
 - **URL :** `/api/public/categori`  
 - **Réponse :**
@@ -304,7 +297,7 @@ $ python app.py
 ]
 ```
 
-#### 11. **Récupérer liste des évènements**
+#### 11. **Récupérer liste des évènements ( public )**
 - **Méthode :** GET  
 - **URL :** `/api/public/evenements`  
 - **Réponse :**
@@ -322,7 +315,7 @@ $ python app.py
 ]
 ```
 
-#### 12. **Détail d'un évènement**
+#### 12. **Détail d'un évènement ( public )**
 - **Méthode :** GET  
 - **URL :** `/api/public/evenements/1`  
 - **Réponse :**

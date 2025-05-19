@@ -1,4 +1,4 @@
-from modeles.modele import Categories, db, Evenement, utilisateur, comande, panier
+from modeles.modele import Categories, db, Evenement, utilisateur
 from werkzeug.security import generate_password_hash
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 from flask_cors import cross_origin
