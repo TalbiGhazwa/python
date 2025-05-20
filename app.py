@@ -62,6 +62,7 @@ def afficher_panier():
             'total': item.ticket_type.prix * item.quantite
         } for item in items
     ]), 200
+
 @api.route('/api/commandePanier/valider_commande', methods=['POST'])
 @jwt_required()
 def valider_commande():
@@ -73,7 +74,7 @@ def valider_commande():
     total = sum(item.ticket_type.prix * item.quantite for item in panier)
     commande = Commande(utilisateur_id=user_id, total=total)
     db.session.add(commande)
-    db.session.flush()  # obtenir ID commande sans commit
+    db.session.flush()  # obtenir ID commande
 
     for item in panier:
         commande_item = CommandeItem(

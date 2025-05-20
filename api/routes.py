@@ -12,6 +12,8 @@ api = Blueprint('api',__name__)
 CORS(api, resources={r"/*": {"origins":"*"}})
 from dotenv import load_dotenv
 import os
+
+# inscription pour nouveaux client
 @api.route('/api/inscription', methods=['POST'])
 def inscription():
     data = request.json
@@ -24,7 +26,7 @@ def inscription():
     if utilisateur.query.filter_by(email=email).first():
         return jsonify({'erreur':'email déja existe'}), 400
 
-    mPass_hash = generate_password_hash(motPasse, method='pbkdf2:sha256')
+    mPass_hash = generate_password_hash(motPasse, os.getenv('HASHPASSWORD')) #genrer une mot de pass haché
     new_utilisateur = utilisateur(
         nomUtilisateur=nomUtilisateur,
         prenomUtilisateur=prenomUtilisateur,
@@ -36,6 +38,7 @@ def inscription():
     db.session.commit()
 
     return jsonify({'message': 'utilisateur crée avec succès'}), 201
+#la panier de la client
 @api.route('/api/commandePanier', methods=['POST'])
 @jwt_required()
 def ajouter_au_panier():
@@ -53,10 +56,10 @@ def ajouter_au_panier():
     if not evenement:
         return jsonify({'erreur': 'Événement introuvable'}), 404
 
-    # Vérifie si le type de ticket existe déjà pour cet événement
+    # Vérife si le type de ticket existe déjà pour cet événement
     ticket_type = TicketType.query.filter_by(nom=ticket_type_nom, evenement_id=evenement_id).first()
 
-    # Si le type de ticket n'existe pas, on le crée
+    # crée nv type de ticket s'il n'existe pas
     if not ticket_type:
         if prix is None:
             return jsonify({'erreur': 'Le prix est requis pour créer un nouveau type de ticket'}), 400
@@ -72,8 +75,8 @@ def ajouter_au_panier():
     ).first()
 
     if item_existant:
-        item_existant.quantite += quantite
-        item_existant.total_prix = item_existant.quantite * ticket_type.prix
+        item_existant.quantite += quantite #augemente la quntitie si la mem produit ajouter a la panier 
+        item_existant.total_prix = item_existant.quantite * ticket_type.prix  #Calculer  la prix total  de la produit 
     else:
         item_existant = PanierItem(
             utilisateur_id=utilisateur_id,
@@ -87,6 +90,7 @@ def ajouter_au_panier():
     db.session.commit()
 
     return jsonify({'message': 'Article ajouté au panier avec succès'}), 201
+#apre valider la commande la panier doit etre vider 
 @api.route('/api/commande/supprimer', methods=['DELETE'])
 @jwt_required()
 def supprimer_commandes():
@@ -99,12 +103,12 @@ def supprimer_commandes():
         # Supprimer les items liés à chaque commande
         CommandeItem.query.filter_by(commande_id=commande.id).delete()
 
-        # Supprimer la commande elle-même
+        # Supprimer la commande même
         db.session.delete(commande)
 
     db.session.commit()
     return jsonify({'message': 'Commandes supprimées avec succès'}), 200
-
+# recupere le information de la commande client 
 @api.route('/api/commandePanier/commande/info', methods=['GET'])
 @jwt_required()
 def commande_info():
@@ -146,6 +150,7 @@ def commande_info():
 
     return jsonify(resultat), 200
 
+#recupere le information de la utilisateur connecte
 @api.route('/api/commandePanier/utilisateur/info', methods=['GET'])
 @jwt_required()
 def info_utilisateur():
@@ -161,7 +166,7 @@ def info_utilisateur():
         'email': user.email
     })
 
-
+#valider la commande 
 @api.route('/api/commande/valider', methods=['POST'])
 @jwt_required()
 def valider_commande_utilisateur():
@@ -172,7 +177,7 @@ def valider_commande_utilisateur():
     if not panier_items:
         return jsonify({'erreur': 'Le panier est vide'}), 400
 
-    # Calculer le total
+    # Calculer le total 
     total = sum(item.total_prix for item in panier_items)
 
     # Créer la commande
@@ -196,7 +201,7 @@ def valider_commande_utilisateur():
     db.session.commit()
 
     return jsonify({'message': 'Commande validée avec succès', 'commande_id': nouvelle_commande.id}), 201
-
+# api connexion utilisateur base sur la role 'admin , client'
 @api.route('/api/connexion', methods=['POST'])
 
 def connexion():
@@ -210,6 +215,7 @@ def connexion():
         return jsonify({'access_token':accer_token, "role":user.role}),200
     return jsonify({'erreur':'invalide'}),401
 
+#calculer la nomber des element exist dans la panier 
 @api.route('/api/commandePanier/count', methods=['GET'])
 @jwt_required()
 def get_panier_count():
@@ -217,6 +223,7 @@ def get_panier_count():
     count = PanierItem.query.filter_by(utilisateur_id=user_id).count()
     return jsonify({'count': count})
 
+#afficher le information de la panier chbiha 
 @api.route('/api/commandePanier/view', methods=['GET'])
 @jwt_required()
 def afficher_panier_utilisateur():
@@ -250,9 +257,7 @@ def afficher_panier_utilisateur():
 
 # recuperer tout les utilisateur de role ="client"
 @api.route('/api/admin/clients', methods=['GET'])
-
 @jwt_required()
-
 def get_client():
     clients = utilisateur.query.filter_by(role="CLIENT").all()
     return jsonify([{
@@ -265,10 +270,8 @@ def get_client():
         for client in clients
     ]),200
 
-# pour tout visiteurs non authentifier
+# afficher le categorie de la evenement pour tout visiteurs non authentifier
 @api.route('/api/public/categori',methods=['GET'])
-
-
 def public_get_categorie():
     Categorie = Categories.query.all()
     return jsonify([{
@@ -280,8 +283,6 @@ def public_get_categorie():
 
 #pour un accée public a tout les evenement
 @api.route('/api/public/evenements',methods=['GET'])
-
-
 def get_all_evenement():
     events = Evenement.query.all()
     return jsonify([{
@@ -295,6 +296,7 @@ def get_all_evenement():
     } for E in events
     ]),200
 
+#recupere le infromation de la evenement pour tous le utilisateur public 
 @api.route('/api/public/evenements/<int:id>', methods=['GET'])
 def get_evenement(id):
     event = Evenement.query.get(id)
@@ -302,32 +304,16 @@ def get_evenement(id):
         return jsonify(event.remplissage())
     return jsonify({'erreur':'evenement pas trouvée'}),404
 
-#accée public categorie_id
+#recupere le infromationde la categories par id 
 @api.route('/api/categori/<int:id>',methods=['GET'])
-
 @jwt_required()
-
 def manage_categorie_id(id):
         categori = Categories.query.get(id)
         if categori:
             return jsonify({'id':categori.id,'nomCategori':categori.nomCategori}),200
         return jsonify({'erreur':'categorie non trouvée'}),404
-("""
-    if request.method == 'POST':
-        data = request.json
-        cat_name = data.get('nomCategori')
-        if not cat_name:
-            return jsonify({'erreur': 'nom categorie requise'}),400
-        if Categories.query.filter_by(nomCategori=cat_name).first():
-            return jsonify({'erreur':'categorie existe'}),400
-        
-        new_cat = Categories(nomCategori=cat_name)
-        db.session.add(new_cat)
-        db.session.commit()
-        return jsonify({'message':'categorie ajouter avec succée'}),201
-""")
 
-
+# admin recupere tout categorie
 @api.route('/api/admin/categori',methods=['GET'])
 @jwt_required()
 def get_cat_admin():
@@ -338,7 +324,7 @@ def get_cat_admin():
     } for c in cat]), 200
 
 
-#que admin peut ajouter une categorie
+# admin ajoute une categorie
 @api.route('/api/admin/categori',methods=['POST'])
 @jwt_required()
 def ajout_cat():
@@ -353,7 +339,7 @@ def ajout_cat():
     db.session.commit()
     return jsonify({'message':'categorie ajoutée avec succès'}),201
 
-#admin modif || supprime categorie
+#admin modifier la categorie
 @api.route('/api/admin/categori/<int:id>', methods=['PUT'])
 @jwt_required()
 def modifier_categorie(id):
@@ -370,7 +356,7 @@ def modifier_categorie(id):
     db.session.commit()
     return jsonify({'message': 'categorie modifiée avec succès'}),200
  
-# admin recupere t evenement
+# admin recupere tout les evenement
 @api.route('/api/admin/evenements', methods=['GET'])
 
 @jwt_required()
@@ -391,48 +377,29 @@ def get_evenement_admin():
         }for E in event
             ]),200
 
-("""
-     # delete this===>214
-    if request.method == 'POST':
-        data = request.json
-        cat = Categories.query.filter_by(nomCategori=data.get('categori')).first()
-        if not cat:
-            return jsonify({'erreur':'categorie pas trouvée'}),400
-        
-        new_evenement = Evenement(
-            nomEvenement = data.get('nomEvenement'),
-            typeEvenement = data.get('typeEvenement'),
-            dateEvenement = data.get('dateEvenement'),
-            PrixEvenement = data.get('PrixEvenement'),
-            categorie = cat
-        )
-        db.session.add(new_evenement)
-        db.session.commit()
-        return jsonify({'mesage':'evenement crée avec succée'}),201
-    """)
-
+# admin ajouter nouvelle evenement
 @api.route('/api/admin/evenements', methods=['POST'])
 
 @jwt_required()
 def ajout_evenement():
     data = request.json
-    print("données reçues :", data)  # This is printing the incoming data
+    print("données reçues :", data)  
 
-    #  verif si tout f.require sont présent
+    #  verifier si tout f.require sont présent
     champs_requis = ['nomEvenement', 'typeEvenement', 'dateEvenement', 'PrixEvenement', 'adresse', 'category_id']
     champs_manquants = [champ for champ in champs_requis if champ not in data or not data[champ]]
 
     if champs_manquants:
-        print(f"Champs manquants: {', '.join(champs_manquants)}")  # Log the missing fields
+        print(f"Champs manquants: {', '.join(champs_manquants)}")  
         return jsonify({'erreur': f'champs manquants : {", ".join(champs_manquants)}'}), 400
 
     # Vérifier si la catégorie existe
     cat = Categories.query.get(data['category_id'])
     if not cat:
-        print(f"Catégorie non trouvée pour l'ID {data['category_id']}")  # Log if category doesn't exist
+        print(f"Catégorie non trouvée pour l'ID {data['category_id']}")  
         return jsonify({'erreur': 'Catégorie non trouvée'}), 404
 
-    # Create the event
+    # crée evenement
     nouvel_evenement = Evenement(
         nomEvenement=data['nomEvenement'],
         typeEvenement=data['typeEvenement'],
@@ -446,7 +413,7 @@ def ajout_evenement():
     db.session.commit()
 
     return jsonify({'message': 'Événement créé avec succès'}), 201
-
+#admin peur supprimer ou modifeir evenement
 @api.route('/api/admin/evenements/<int:id>', methods=['PUT','DELETE'])
 @jwt_required()
 def mise_ajour_supprim_evenement(id):
@@ -454,7 +421,7 @@ def mise_ajour_supprim_evenement(id):
     if not event:
         return jsonify({'erreur':'evenement pas trouvée'}),404
     
-    #modification evenement
+    # modifier evenement
     if request.method == 'PUT':
         data = request.json
         print('donner modifie:', data)
@@ -473,6 +440,7 @@ def mise_ajour_supprim_evenement(id):
         db.session.delete(event)
         db.session.commit()
         return jsonify ({'mesage':'evenement supprimer avec succée'}),200
+#admin recupere categories par id  
 @api.route('/api/admin/categori/<int:id>', methods=['GET'])
 @jwt_required()
 def get_categorie_by_id(id):
@@ -486,13 +454,14 @@ def delete_categorie(id):
     if not categori:
         return jsonify({'erreur': 'categorie non trouvée'}), 404
 
-    # Delete related events first
+    #  supprimer evenement associé
     Evenement.query.filter_by(category_id=id).delete()
 
-    # Then delete the category
+    # supprimer categorie
     db.session.delete(categori)
     db.session.commit()
     return jsonify({'message': 'categorie et evenements associés supprimés avec succès'}), 200
+#pou admin recuepere tous les client
 @api.route('/api/admin/utilisateurs', methods=['GET'])
 @jwt_required()
 def get_all_utilisateurs():

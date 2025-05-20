@@ -57,7 +57,7 @@ class utilisateur(db.Model):
 
 class TicketType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nom = db.Column(db.String(50), nullable=False)  # ex: Classe A, Classe B, Familial
+    nom = db.Column(db.String(50), nullable=False)  # solo, duo et Familial
     prix = db.Column(db.Float, nullable=False)
     evenement_id = db.Column(db.Integer, db.ForeignKey('evenement.id'), nullable=False)
     evenement = db.relationship('Evenement', backref=db.backref('ticket_types', lazy=True))

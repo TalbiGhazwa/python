@@ -10,4 +10,3 @@ controller = Blueprint('controller',__name__)
 
 CORS(controller, resources={r"/*": {"origins":"*"}})
 
-# recherche évènement par id

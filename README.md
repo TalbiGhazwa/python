@@ -20,9 +20,9 @@
 
 <br>
 
-## :dart: About ##
+## About ##
 
-Il s'agit d'un back-end développé avec **Flask** pour la gestion des événements et de la billetterie.
+Il s'agit d'un back-end développé avec **Flask** pour la gestion des événements et de billetterie.
 
 Fonctionnalités :
 - Authentification basée sur JWT
@@ -32,7 +32,7 @@ Fonctionnalités :
 
 ---
 
-## :sparkles: Features ##
+## Features ##
 
 :heavy_check_mark: Authentification JWT ;  
 :heavy_check_mark: Rôles utilisateurs (admin, client) ;  
@@ -42,7 +42,7 @@ Fonctionnalités :
 :heavy_check_mark: Intégration PostgreSQL ;  
 
 ---
-## :rocket: Technologies ##
+## Technologies ##
 
 Ce projet utilise les technologies suivantes :
 
@@ -56,16 +56,13 @@ Ce projet utilise les technologies suivantes :
 
 ---
 
-## :white_check_mark: Requirements ##
+## Requirements ##
  
 - [Python](https://www.python.org/)  
 - [pip](https://pip.pypa.io/)  
 - [GIT](https://git-scm.com) 
 
-
-## :checkered_flag: Starting ##
-
-
+## Starting ##
 # Cloner le projet
 ```bash
 $ git clone https://github.com/TalbiGhazwa/python
@@ -89,7 +86,7 @@ $ python app.py
 ```
 # Serveur accessible sur :
 `http://localhost:4200`
-## :gear: API Endpoints ##
+## API Endpoints ##
 
 ### URL de Base
 `http://127.0.0.1:5000/api/`
