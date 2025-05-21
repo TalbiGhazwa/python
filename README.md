@@ -86,6 +86,7 @@ $ python app.py
 ```
 # Serveur accessible sur :
 `http://localhost:4200`
+
 ## API Endpoints ##
 
 ### URL de Base
@@ -326,4 +327,34 @@ $ python app.py
   "adresse": "stade de france",
   "category_id": 1
 }
+```
+#### 13. **ajouter au panier**
+- **Méthode :** POST  
+- **URL :** `/api/commandePanier`  
+- **Corps de la requête :**
+```json
+[
+ {
+  "evenement_id": 1,
+  "ticket_type_nom": "SOLO",
+  "quantite": 2,
+  "prix": 600
+ }
+
+]
+- **Réponse :**
+```json
+{
+  "message": "Article ajouté au panier avec succès",
+  "article": {
+    "id": 1,
+    "evenement_id": 5,
+    "nomEvenement": "France - Espagne",
+    "ticket_type": "SOLO",
+    "quantite": 2,
+    "prix_unitaire": 600,
+    "total_prix": 1200
+  }
+}
+
 ```

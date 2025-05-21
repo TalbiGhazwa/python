@@ -1,3 +1,4 @@
+#import le model et le bibletheque niccessaire pour exuction mon projet flas cette fichier est app.py la fichier main de mon projet 
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
@@ -6,20 +7,18 @@ from werkzeug.security import generate_password_hash
 from dotenv import load_dotenv
 import pymysql
 import os
+from controllers.utilisateurController import utilisateur_controller
 from modeles.modele import Categories, Evenement, utilisateur, db, TicketType, PanierItem, Commande, CommandeItem
-
 from api import api
-
+from api import cnx
 from src.config.database import init_db
-
 import pymysql
-
 from src.config.database import init_db
 pymysql.install_as_MySQLdb()
 from dotenv import load_dotenv
 import os
 
-load_dotenv()  
+load_dotenv()   #appel ficher env qui contient les infromation global de projet en tant que ur base ded onne le cle scuirise  ...
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins":"*"}})
@@ -27,6 +26,35 @@ init_db(app)
 
 jwt = JWTManager(app)
 db.init_app(app)
+
+# creer compte admin
+def creer_compte_admin():
+    email_admin = os.getenv('ADMINMAIL')
+    password_admin = os.getenv('ADMINPASS')
+    admin_existe = utilisateur.query.filter_by(email = email_admin).first()
+    if not admin_existe:
+        password_hashed = generate_password_hash(password_admin, method=os.getenv('HASHPASSWORD'))
+        utilisateur_admin = utilisateur(email=email_admin, nomUtilisateur="admin",prenomUtilisateur="admin",motPasse=password_hashed, role="ADMIN")
+        db.session.add(utilisateur_admin)
+        db.session.commit()
+        print("compte ADMIN creer avec succée") 
+    else:
+        print("compte ADMIN déja existe")
+#
+with app.app_context():
+    db.create_all()
+    creer_compte_admin()
+
+app.register_blueprint (api)
+app.register_blueprint (utilisateur_controller)
+app.register_blueprint (cnx)
+if __name__=='__main__':
+    app.run(debug=True)
+
+
+
+
+""" 
 @api.route('/api/commandePanier/panier', methods=['POST'])
 @jwt_required()
 def ajouter_panier():
@@ -48,6 +76,7 @@ def ajouter_panier():
 
     db.session.commit()
     return jsonify({'message': 'Ajouté au panier'}), 201
+
 @api.route('/api/commandePanier/panier', methods=['GET'])
 @jwt_required()
 def afficher_panier():
@@ -71,10 +100,10 @@ def valider_commande():
     if not panier:
         return jsonify({'erreur': 'Panier vide'}), 400
 
-    total = sum(item.ticket_type.prix * item.quantite for item in panier)
+    total = sum(item.ticket_type.prix * item.quantite for item in panier) # somme total
     commande = Commande(utilisateur_id=user_id, total=total)
-    db.session.add(commande)
-    db.session.flush()  # obtenir ID commande
+    db.session.add(commande) # ajout comande
+    db.session.flush()  # obtenir id commande
 
     for item in panier:
         commande_item = CommandeItem(
@@ -87,25 +116,4 @@ def valider_commande():
     PanierItem.query.filter_by(utilisateur_id=user_id).delete()
     db.session.commit()
     return jsonify({'message': 'Commande validée', 'total': total}), 201
-
-# creer compte admin
-def creer_compte_admin():
-    email_admin = os.getenv('ADMINMAIL')
-    password_admin = os.getenv('ADMINPASS')
-    admin_existe = utilisateur.query.filter_by(email = email_admin).first()
-    if not admin_existe:
-        password_hashed = generate_password_hash(password_admin, method=os.getenv('HASHPASSWORD'))
-        utilisateur_admin = utilisateur(email=email_admin, nomUtilisateur="admin",prenomUtilisateur="admin",motPasse=password_hashed, role="ADMIN")
-        db.session.add(utilisateur_admin)
-        db.session.commit()
-        print("compte ADMIN creer avec succée")
-    else:
-        print("compte ADMIN déja existe")
-
-with app.app_context():
-    db.create_all()
-    creer_compte_admin()
-
-app.register_blueprint (api)
-if __name__=='__main__':
-    app.run(debug=True)
+ """

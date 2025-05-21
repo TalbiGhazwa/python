@@ -9,6 +9,9 @@ import pymysql
 pymysql.install_as_MySQLdb
 
 db = SQLAlchemy()
+
+#CETTE FICHIER EST LA PARTIE MODEL DANS MON PROJET , LORSQUE JE J'exucter SQLAlchemy elle va genere une table dans la base de donne  
+
 class Categories(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nomCategori = db.Column(db.String(255), unique=True, nullable=False)
@@ -38,8 +41,6 @@ class Evenement(db.Model):
                 'id_categori' : self.categorie.id,
                 'nomCategori' : self.categorie.nomCategori
             }
-
-
         }
 
 class utilisateur(db.Model):
@@ -52,8 +53,6 @@ class utilisateur(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.motPasse, password)
-
-
 
 class TicketType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -69,7 +68,6 @@ class PanierItem(db.Model):
     ticket_type_id = db.Column(db.Integer, db.ForeignKey('ticket_type.id'))
     quantite = db.Column(db.Integer, default=1)
     total_prix = db.Column(db.Float)  
-
 class Commande(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)

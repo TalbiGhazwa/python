@@ -1,0 +1,6 @@
+compte ADMIN déja existe
+données reçues : {'nomEvenement': 'Test Event', 'typeEvenement': 'foot', 'dateEvenement': '2025-12-31', 'PrixEvenement': 100, 'adresse': '123 Test ', 'category_id': 9999}
+Catégorie non trouvée pour l'ID 9999
+données reçues : {'typeEvenement': 'hand', 'dateEvenement': '2025-12-31', 'PrixEvenement': 100, 'adresse': '123 Test ', 'category_id': 9}
+Champs manquants: nomEvenement
+données reçues : {'nomEvenement': 'Test Event', 'typeEvenement': 'foot', 'dateEvenement': '2025-12-31', 'PrixEvenement': 100, 'adresse': '123 Test ', 'category_id': 9}
