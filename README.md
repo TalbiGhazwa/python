@@ -333,15 +333,15 @@ $ python app.py
 - **URL :** `/api/commandePanier`  
 - **Corps de la requête :**
 ```json
-[
+
  {
   "evenement_id": 1,
   "ticket_type_nom": "SOLO",
   "quantite": 2,
   "prix": 600
  }
+```
 
-]
 - **Réponse :**
 ```json
 {
