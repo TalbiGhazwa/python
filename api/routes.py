@@ -141,7 +141,7 @@ def info_utilisateur():
     })
 
 #valider la commande 
-@api.route('/api/commande/valider', methods=['POST'])
+@api.route('/api/commandePanier/valider', methods=['POST'])
 @jwt_required()
 def valider_commande_utilisateur():
     utilisateur_id = get_jwt_identity()
