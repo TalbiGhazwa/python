@@ -19,7 +19,6 @@ def create_evenement():
     nom = data.get('nomEvenement')
     typeE = data.get('typeEvenement')
     date = data.get('dateEvenement')
-    prix = data.get('PrixEvenement')
     adresse = data.get('adresse')
     categorie_id = data.get('category_id')
 
@@ -30,7 +29,6 @@ def create_evenement():
         nomEvenement=nom,
         typeEvenement=typeE,
         dateEvenement=date,
-        PrixEvenement=prix,
         adresse=adresse,
         category_id=categorie_id
     )

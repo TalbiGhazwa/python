@@ -112,7 +112,6 @@ def commande_info():
                     'nomEvenement': evenement.nomEvenement,
                     'dateEvenement': evenement.dateEvenement,
                     'typeEvenement': evenement.typeEvenement,
-                    'PrixEvenement': evenement.PrixEvenement,
                     'adresse': evenement.adresse
                 } if evenement else None
             })
@@ -222,7 +221,6 @@ def afficher_panier_utilisateur():
                 'nomEvenement': evenement.nomEvenement,
                 'dateEvenement': evenement.dateEvenement,
                 'typeEvenement': evenement.typeEvenement,
-                'PrixEvenement': evenement.PrixEvenement,
                 'adresse': evenement.adresse
             } if evenement else None
         })
@@ -264,7 +262,6 @@ def get_all_evenement():
         'nomEvenement' : E.nomEvenement,
         'typeEvenement' : E.typeEvenement,
         'dateEvenement' : E.dateEvenement,
-        'PrixEvenement' : E.PrixEvenement,
         'categorie' : {'id' : E.categorie.id, 'nomCategori' : E.categorie.nomCategori} if E.categorie else None
 
     } for E in events
@@ -342,7 +339,6 @@ def get_evenement_admin():
             'nomEvenement': E.nomEvenement,
             'typeEvenement': E.typeEvenement,
             'dateEvenement': E.dateEvenement,
-            'PrixEvenement': E.PrixEvenement,
             'adresse' : E.adresse,
             'categorie':{
                 'id_categori': E.categorie.id,
@@ -358,7 +354,7 @@ def ajout_evenement():
     print("données reçues :", data)  
 
     #  verifier si tout f.require et présent
-    champs_requis = ['nomEvenement', 'typeEvenement', 'dateEvenement', 'PrixEvenement', 'adresse', 'category_id']
+    champs_requis = ['nomEvenement', 'typeEvenement', 'dateEvenement', 'adresse', 'category_id']
     champs_manquants = [champ for champ in champs_requis if champ not in data or not data[champ]]
 
     if champs_manquants:
@@ -376,7 +372,6 @@ def ajout_evenement():
         nomEvenement=data['nomEvenement'],
         typeEvenement=data['typeEvenement'],
         dateEvenement=data['dateEvenement'],
-        PrixEvenement=data['PrixEvenement'],
         adresse=data['adresse'],
         categorie=cat
     )
@@ -400,7 +395,6 @@ def mise_ajour_supprim_evenement(id):
         event.nomEvenement = data.get('nomEvenement',event.nomEvenement)
         event.typeEvenement = data.get('typeEvenement',event.typeEvenement)
         event.dateEvenement = data.get('dateEvenement',event.dateEvenement)
-        event.PrixEvenement = data.get('PrixEvenement',event.PrixEvenement)
         event.adresse = data.get('adresse', event.adresse)
         event.category_id = data.get('category_id',event.category_id)
 

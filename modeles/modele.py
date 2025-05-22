@@ -24,7 +24,6 @@ class Evenement(db.Model):
     nomEvenement = db.Column(db.String(255), nullable=False)
     typeEvenement = db.Column(db.String(255), nullable=False)
     dateEvenement = db.Column(db.String(255), nullable=False)
-    PrixEvenement = db.Column(db.String(255), nullable=False)
     adresse = db.Column(db.String(255), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
     categorie = db.relationship('Categories', backref=db.backref('evenements',lazy=True))
@@ -35,7 +34,6 @@ class Evenement(db.Model):
             'nomEvenement' : self.nomEvenement,
             'typeEvenement' : self.typeEvenement,
             'dateEvenement' : self.dateEvenement,
-            'PrixEvenement' : self.PrixEvenement,
             'adresse':self.adresse,
             'categorie':{
                 'id_categori' : self.categorie.id,
