@@ -9,10 +9,13 @@ import pymysql
 pymysql.install_as_MySQLdb
 
 db = SQLAlchemy()
+
+#CETTE FICHIER EST LA PARTIE MODEL DANS MON PROJET , LORSQUE JE J'exucter SQLAlchemy elle va genere une table dans la base de donne  
+
 class Categories(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nomCategori = db.Column(db.String(255), unique=True, nullable=False)
-
+ 
     def __repr__(self):
         return f'<categories{self.nomCategori}>'
     
@@ -21,7 +24,6 @@ class Evenement(db.Model):
     nomEvenement = db.Column(db.String(255), nullable=False)
     typeEvenement = db.Column(db.String(255), nullable=False)
     dateEvenement = db.Column(db.String(255), nullable=False)
-    PrixEvenement = db.Column(db.String(255), nullable=False)
     adresse = db.Column(db.String(255), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
     categorie = db.relationship('Categories', backref=db.backref('evenements',lazy=True))
@@ -32,20 +34,17 @@ class Evenement(db.Model):
             'nomEvenement' : self.nomEvenement,
             'typeEvenement' : self.typeEvenement,
             'dateEvenement' : self.dateEvenement,
-            'PrixEvenement' : self.PrixEvenement,
             'adresse':self.adresse,
             'categorie':{
                 'id_categori' : self.categorie.id,
                 'nomCategori' : self.categorie.nomCategori
             }
-
-
         }
 
 class utilisateur(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nomUtilisateur = db.Column(db.String(255),unique=True, nullable=False)
-    prenomUtilisateur = db.Column(db.String(255),unique=True, nullable=False)
+    nomUtilisateur = db.Column(db.String(255), nullable=False)
+    prenomUtilisateur = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255),unique=True, nullable=False)
     motPasse = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(255), nullable= False)
@@ -53,11 +52,36 @@ class utilisateur(db.Model):
     def check_password(self, password):
         return check_password_hash(self.motPasse, password)
 
-class comande(db.Model):
+class TicketType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    numComande = db.Column(db.Integer,unique=True, nullable=False)
-    dateComande = db.Column(db.String(255),unique=True, nullable=False)
+    nom = db.Column(db.String(50), nullable=False)  # solo, duo et Familial
+    prix = db.Column(db.Float, nullable=False)
+    evenement_id = db.Column(db.Integer, db.ForeignKey('evenement.id'), nullable=False)
+    evenement = db.relationship('Evenement', backref=db.backref('ticket_types', lazy=True))
+
+class PanierItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'))
+    evenement_id = db.Column(db.Integer, db.ForeignKey('evenement.id'))
+    ticket_type_id = db.Column(db.Integer, db.ForeignKey('ticket_type.id'))
+    quantite = db.Column(db.Integer, default=1)
+    total_prix = db.Column(db.Float)  
+class Commande(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    utilisateur_id = db.Column(db.Integer, db.ForeignKey('utilisateur.id'), nullable=False)
+    date_commande = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    total = db.Column(db.Float, nullable=False)
+
+    utilisateur = db.relationship('utilisateur')
+
+class CommandeItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    commande_id = db.Column(db.Integer, db.ForeignKey('commande.id'), nullable=False)
+    ticket_type_id = db.Column(db.Integer, db.ForeignKey('ticket_type.id'), nullable=False)
+    quantite = db.Column(db.Integer, nullable=False)
+
+    ticket_type = db.relationship('TicketType')
+    commande = db.relationship('Commande', backref=db.backref('items', lazy=True))
 
 
-class panier(db.Model):
-    id =db.Column(db.Integer, primary_key=True)
+ 
